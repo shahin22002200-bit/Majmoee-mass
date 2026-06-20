@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم مدیریتی مجموعه ماساژ 👑💆‍♂️</title>
+    <!-- اضافه کردن کتابخانه ساخت پی‌دی‌اف -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --primary: #4a0e4e;
+            --secondary: #ffb142;
+            --success: #2ed573;
+            --danger: #ff4757;
+            --text: #2f3542;
+            --info: #1e90ff;
+        }
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+        }
+        .container { max-width: 100%; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 15px; color: var(--primary); }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        h3 { margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid #f1f2f6; color: var(--primary); }
+        
+        input, select, button { padding: 8px; margin: 3px 0; border-radius: 6px; border: 1px solid #ced6e0; box-sizing: border-box; font-family: inherit; font-size: 13px; }
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        
+        .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .tab-btn { background-color: #dcdde1; color: var(--text); }
+        .tab-btn.active { background-color: var(--primary); color: white; }
+
+        .table-wrapper { overflow-x: auto; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; min-width: 1400px; background: white; text-align: center; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 6px; }
+        th { background-color: #4a0e4e; color: white; font-weight: normal; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        .table-input { width: 75px; text-align: center; padding: 5px; margin: 0; border: 1px solid #ddd; border-radius: 4px; }
+        .masseur-name-input { width: 110px; font-weight: bold; }
+        .result-cell { font-weight: bold; color: #2ed573; background: #f0fff4; }
+        .salon-cell { font-weight: bold; color: #4a0e4e; background: #fbf0ff; }
+
+        .summary-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; background: #eccc68; padding: 12px; border-radius: 8px; margin-top: 10px; font-weight: bold; text-align: center; }
+        .hidden { display: none !important; }
+
+        .settled-row { background-color: #ffeaa7 !important; opacity: 0.85; }
+        .settled-btn { background-color: #10ac84 !important; }
+
+        .login-screen { max-width: 360px; margin: 80px auto 0 auto; background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+        .login-screen h2 { color: var(--primary); margin-bottom: 20px; }
+        .login-screen input { width: 100%; margin-bottom: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+        .login-screen button { width: 100%; padding: 12px; border-radius: 8px; }
+
+        #pdf-template { padding: 20px; direction: rtl; font-family: Tahoma, sans-serif; background: white; }
+        .pdf-header { text-align: center; color: #4a0e4e; border-bottom: 3px double #4a0e4e; padding-bottom: 10px; margin-bottom: 20px; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #333; padding: 8px; text-align: center; font-size: 13px; }
+        .pdf-table th { background-color: #f2f2f2; }
+        .pdf-footer { margin-top: 30px; border-top: 2px solid #4a0e4e; padding-top: 10px; font-weight: bold; font-size: 15px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<!-- صفحه ورود ایمن -->
+<div id="login-container" class="login-screen">
+    <h2>ورود به حساب مدیریت 🔐</h2>
+    <div>
+        <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
+        <input type="password" id="password" placeholder="رمز عبور">
+        <button type="button" onclick="checkLogin()">ورود ✨</button>
+    </div>
+</div>
+
+<!-- محتوای اصلی سایت -->
+<div id="main-content" class="container hidden">
+    <header>
+        <h2>سیستم هوشمند مجموعه ماساژ 👑💆‍♂️</h2>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
+        <button class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
+        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج 🚪</button>
+    </div>
+
+    <!-- تب میز کار روزانه -->
+    <div id="daily-tab">
+        <div class="card" style="text-align: center;">
+            <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); font-size: 16px; padding: 12px 25px;">📅 شروع روز کاری جدید</button>
+            <h3 id="current-date-display" class="hidden" style="margin-top: 10px; color: var(--primary);"></h3>
+        </div>
+
+        <div id="workspace" class="card hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>جدول حساب‌کتاب امروز ✏️</h3>
+                <button onclick="addNewRow()" style="background-color: var(--info); padding: 6px 12px;">➕ افزودن ردیف ماسور جدید</button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>۱. نام ماسور</th>
+                            <th>۲. مشتری ۱</th>
+                            <th>۳. مشتری ۲</th>
+                            <th>۴. مشتری ۳</th>
+                            <th>۵. مشتری ۴</th>
+                            <th>۶. مشتری ۵</th>
+                            <th>۷. مشتری ۶</th>
+                            <th>۸. درصد ماسور</th>
+                            <th>۹. درصد سالن</th>
+                            <th>۱۰. بدهی (-)</th>
+                            <th>۱۱. مساعده (+)</th>
+                            <th>۱۲. اخطار</th>
+                            <th>۱۳. امتیاز</th>
+                            <th>۱۴. جمع‌بندی ماسور</th>
+                            <th>۱۵. جمع‌بندی سالن</th>
+                            <th>وضعیت</th>
+                        </tr>
+                    </thead>
+                    <tbody id="excel-body"></tbody>
+                </table>
+            </div>
+
+            <button onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border-radius: 8px;">🔒 پایان، ذخیره و آرشیو روز کاری</button>
+        </div>
+    </div>
+
+    <!-- تب صفحات اختصاصی -->
+    <div id="reports-tab" class="hidden">
+        <div class="card">
+            <h3>پرونده و زونکن اختصاصی پرسنل 📊</h3>
+            <select id="report-masseur-select" onchange="loadMasseurReport()" style="width: 100%; padding: 10px;">
+                <option value="">-- انتخاب ماسور --</option>
+            </select>
+
+            <div id="report-detail" class="hidden" style="margin-top: 20px;">
+                <h3 style="text-align: center;">زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
+                
+                <div class="summary-box">
+                    <div>جمع سهم ماسور این ماه: <span id="total-masseur-money">۰</span> ت</div>
+                    <div>جمع سهم سالن این ماه: <span id="total-salon-money">۰</span> ت</div>
+                    <div>کل بدهی این ماه: <span id="total-debt-money">۰</span> ت</div>
+                    <div>کل مساعده این ماه: <span id="total-assistance-money">۰</span> ت</div>
+                    <div>کل اخطارها: ⚠️ <span id="total-warnings">۰</span></div>
+                    <div style="background: #2ed573; color: white; border-radius: 4px;">امتیاز کل (دائمی): ⭐ <span id="total-stars">۰</span></div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button onclick="generatePDF()" style="background-color: var(--info); flex: 1; padding: 10px;">📥 دانلود گزارش به صورت PDF</button>
+                    <button onclick="clearMasseurMonth()" style="background-color: var(--danger); flex: 1; padding: 10px;">🗓️ ماه کاری جدید و بایگانی</button>
+                </div>
+
+                <h4>تاریخچه روز به روز عملکرد این ماه:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تاریخ و روز</th>
+                                <th>تعداد مشتری</th>
+                                <th>مشتری ۱ تا ۶</th>
+                                <th>درصدها (M/S)</th>
+                                <th>بدهی</th>
+                                <th>مساعده</th>
+                                <th>اخطار</th>
+                                <th>امتیاز</th>
+                                <th>سهم نهایی ماسور</th>
+                                <th>سهم سالن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="archive-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- قالب پنهان برای تولید PDF فاکتور -->
+<div id="pdf-container" class="hidden">
+    <div id="pdf-template">
+        <div class="pdf-header">
+            <h2>گزارش مالی و عملکرد ماهانه مجموعه ماساژ 👑</h2>
+            <p>پرونده اختصاصی پرسنل: <span id="pdf-masseur-name"></span></p>
+        </div>
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>تعداد کل مشتریان</th>
+                    <th>مجموع سهم ماسور (با احتساب بدهی/مساعده)</th>
+                    <th>مجموع درآمد سالن از این ماسور</th>
+                    <th>تعداد اخطار ماه</th>
+                    <th>امتیاز کل ماسور</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="pdf-total-clients">0</td>
+                    <td id="pdf-total-masseur">0 ریال</td>
+                    <td id="pdf-total-salon">0 ریال</td>
+                    <td id="pdf-total-warnings">0</td>
+                    <td id="pdf-total-scores">0</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pdf-footer">
+            <div>وضعیت حساب: تسویه شده و بایگانی شده 🔒</div>
+            <div style="color: #4a0e4e;">💰 سود کامل و خالص کل سالن در این ماه: <span id="pdf-total-profit">0</span> تومان</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const VALID_USER = "Arshaam";
+    const VALID_PASS = "6660488928";
+    let activeDate = "";
+
+    function checkLogin() {
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value;
+        if(u === VALID_USER && p === VALID_PASS) {
+            localStorage.setItem('massage_logged_in', 'true');
+            showMainContent();
+        } else {
+            alert('نام کاربری یا رمز عبور اشتباه است! ❌');
+        }
+    }
+
+    if(localStorage.getItem('massage_logged_in') === 'true') {
+        showMainContent();
+    }
+
+    function showMainContent() {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+    }
+    
+    function logout() { 
+        localStorage.removeItem('massage_logged_in'); 
+        window.location.reload(); 
+    }
+
+    let archive = JSON.parse(localStorage.getItem('massage_excel_archive_v2')) || {};
+    let permanentScores = JSON.parse(localStorage.getItem('massage_permanent_scores')) || {};
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if(tab === 'daily') {
+            document.getElementById('daily-tab').classList.remove('hidden');
+            document.getElementById('reports-tab').classList.add('hidden');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        } else {
+            document.getElementById('daily-tab').classList.add('hidden');
+            document.getElementById('reports-tab').classList.remove('hidden');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            updateMasseurDropdown();
+        }
+    }
+
+    function startNewDay() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        activeDate = new Date().toLocaleDateString('fa-IR', options);
+        
+        document.getElementById('current-date-display').innerText = `📅 روز کاری: ${activeDate}`;
+        document.getElementById('current-date-display').classList.remove('hidden');
+        document.getElementById('workspace').classList.remove('hidden');
+        document.getElementById('start-day-btn').classList.add('hidden');
+        
+        document.getElementById('excel-body').innerHTML = '';
+        addNewRow();
+    }
+
+    function addNewRow() {
+        const tbody = document.getElementById('excel-body');
+        const rowId = Date.now();
+        const tr = document.createElement('tr');
+        tr.id = `row-${rowId}`;
+        tr.innerHTML = `
+            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور"></td>
+            <td><input type="number" class="table-input c1" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c2" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c3" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c4" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c5" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c6" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input p-masseur" value="60" oninput="calculateRow('${rowId}')">%</td>
+            <td><input type="number" class="table-input p-salon" value="40" oninput="calculateRow('${rowId}')">%</td>
+            <td><input type="number" class="table-input debt" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input assistance" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input warning" value="0"></td>
+            <td><input type="number" class="table-input score" value="0"></td>
+            <td id="res-masseur-${rowId}" class="result-cell">0</td>
+            <td id="res-salon-${rowId}" class="salon-cell">0</td>
+            <td><button id="settle-btn-${rowId}" style="background-color: #ff9f43; padding:4px 8px;" onclick="settleRow('${rowId}')">تسویه</button></td>
+        `;
+        tbody.appendChild(tr);
+    }
+
+    function calculateRow(rowId) {
+        const row = document.getElementById(`row-${rowId}`);
+        if(row.classList.contains('settled-row')) return;
+
+        const c1 = +row.querySelector('.c1').value;
+        const c2 = +row.querySelector('.c2').value;
+        const c3 = +row.querySelector('.c3').value;
+        const c4 = +row.querySelector('.c4').value;
+        const c5 = +row.querySelector('.c5').value;
+        const c6 = +row.querySelector('.c6').value;
+        const pMasseur = +row.querySelector('.p-masseur').value;
+        const pSalon = +row.querySelector('.p-salon').value;
+        const debt = +row.querySelector('.debt').value;
+        const assistance = +row.querySelector('.assistance').value;
+
+        const totalClientsMoney = c1 + c2 + c3 + c4 + c5 + c6;
+        
+        let masseurShare = ((totalClientsMoney * pMasseur) / 100) - debt + assistance;
+        let salonShare = (totalClientsMoney * pSalon) / 100;
+
+        document.getElementById(`res-masseur-${rowId}`).innerText = Math.round(masseurShare).toLocaleString();
+        document.getElementById(`res-salon-${rowId}`).innerText = Math.round(salonShare).toLocaleString();
+    }
+
+    function settleRow(rowId) {
+        const row = document.getElementById(`row-${rowId}`);
+        const nameInput = row.querySelector('.masseur-name-input');
+        if(!nameInput.value.trim()) { alert("لطفا ابتدا نام ماسور را وارد کنید"); return; }
+
+        if(confirm(`آیا از تسویه و قفل کردن ردیف ${nameInput.value} مطمئن هستید؟`)) {
+            row.classList.add('settled-row');
+            row.querySelectorAll('input').forEach(input => input.disabled = true);
+            const btn = document.getElementById(`settle-btn-${rowId}`);
+            btn.innerText = "تسویه شد 🔒";
+            btn.classList.add('settled-btn');
+            btn.disabled = true;
+        }
+    }
+
+    function saveAndCloseDay() {
+        const rows = document.querySelectorAll('#excel-body tr');
+        if(rows.length === 0) { alert("ردیفی برای ذخیره وجود ندارد!"); return; }
+
+        let savedCount = 0;
+
+        rows.forEach(row => {
+            const name = row.querySelector('.masseur-name-input').value.trim();
+            if(!name) return;
+
+            const c1 = +row.querySelector('.c1').value;
+            const c2 = +row.querySelector('.c2').value;
+            const c3 = +row.querySelector('.c3').value;
+            const c4 = +row.querySelector('.c4').value;
+            const c5 = +row.querySelector('.c5').value;
+            const c6 = +row.querySelector('.c6').value;
+            const pMasseur = +row.querySelector('.p-masseur').value;
+            const pSalon = +row.querySelector('.p-salon').value;
+            const debt = +row.querySelector('.debt').value;
+            const assistance = +row.querySelector('.assistance').value;
+            const warning = +row.querySelector('.warning').value;
+            const score = +row.querySelector('.score').value;
+
+            const clientList = [c1, c2, c3, c4, c5, c6];
+            const activeClientsCount = clientList.filter(c => c > 0).length;
+            const totalClientsMoney = c1 + c2 + c3 + c4 + c5 + c6;
+            
+            const masseurShare = ((totalClientsMoney * pMasseur) / 100) - debt + assistance;
+            const salonShare = (totalClientsMoney * pSalon) / 100;
+
+            if(!permanentScores[name]) permanentScores[name] = 0;
+            permanentScores[name] += score;
+
+            if(!archive[name]) archive[name] = [];
+
+            archive[name].push({
+                date: activeDate,
+                clients: clientList,
+                clientsCount: activeClientsCount,
+                perM: pMasseur,
+                perS: pSalon,
+                debt: debt,
+                assistance: assistance,
+                warning: warning,
+                score: score,
+                mShare: masseurShare,
+                sShare: salonShare
+            });
+            savedCount++;
+        });
+
+        if(savedCount > 0) {
+            localStorage.setItem('massage_excel_archive_v2', JSON.stringify(archive));
+            localStorage.setItem('massage_permanent_scores', JSON.stringify(permanentScores));
+            alert(`اطلاعات روز کاری با موفقیت آرشیو شد! 🔒✨`);
+            
+            document.getElementById('workspace').classList.add('hidden');
+            document.getElementById('current-date-display').classList.add('hidden');
+            document.getElementById('start-day-btn').classList.remove('hidden');
+        } else {
+            alert("لطفاً نام ماسورها رو وارد کن ارشام جان! ✏️");
+        }
+    }
+
+    function updateMass
