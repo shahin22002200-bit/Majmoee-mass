@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم مدیریتی مجموعه ماساژ 👑🦁</title>
-    <!-- اضافه کردن کتابخانه ساخت پی‌دی‌اف -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>سیستم مدیریتی مجموعه ماساژ 👑💆‍♂️</title>
     <style>
         :root {
             --bg: #f4f6f9;
@@ -15,7 +13,6 @@
             --success: #2ed573;
             --danger: #ff4757;
             --text: #2f3542;
-            --info: #1e90ff;
         }
         body {
             font-family: Tahoma, sans-serif;
@@ -24,358 +21,366 @@
             margin: 0;
             padding: 10px;
         }
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            background: var(--card);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .login-container h2 {
-            color: var(--primary);
-            margin-bottom: 25px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            font-family: Tahoma, sans-serif;
-            font-weight: bold;
-        }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .main-container {
-            display: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--card);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px 10px;
-            text-align: center;
-        }
-        th {
-            background-color: var(--primary);
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .locked-row {
-            background-color: #e2f0d9 !important;
-            color: #385723;
-        }
-        .actions-btn {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .btn-success { background-color: var(--success); }
-        .btn-danger { background-color: var(--danger); }
-        .btn-info { background-color: var(--info); }
-        .btn-settle {
-            background-color: #2ed573;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-settle:disabled {
-            background-color: #a4b0be;
-            cursor: not-allowed;
-        }
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-            thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-            tr {
-                border: 1px solid #ccc;
-                margin-bottom: 10px;
-                background: #fff;
-                border-radius: 8px;
-                padding: 10px;
-            }
-            td {
-                border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 50%;
-                text-align: right;
-                display: flex;
-                justify-content: space-between;
-            }
-            td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                color: var(--primary);
-            }
-        }
+        .container { max-width: 100%; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 15px; color: var(--primary); }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        h3 { margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid #f1f2f6; color: var(--primary); }
+        
+        input, select, button { padding: 8px; margin: 3px 0; border-radius: 6px; border: 1px solid #ced6e0; box-sizing: border-box; font-family: inherit; font-size: 13px; }
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        
+        .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .tab-btn { background-color: #dcdde1; color: var(--text); }
+        .tab-btn.active { background-color: var(--primary); color: white; }
+
+        /* استایل جدول اکسلی */
+        .table-wrapper { overflow-x: auto; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; min-width: 1200px; background: white; text-align: center; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 6px; }
+        th { background-color: #4a0e4e; color: white; font-weight: normal; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        .table-input { width: 80px; text-align: center; padding: 5px; margin: 0; border: 1px solid #ddd; border-radius: 4px; }
+        .masseur-name-input { width: 110px; font-weight: bold; }
+        .result-cell { font-weight: bold; color: #2ed573; background: #f0fff4; }
+        .salon-cell { font-weight: bold; color: #4a0e4e; background: #fbf0ff; }
+
+        .summary-box { display: flex; justify-content: space-between; background: #eccc68; padding: 12px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
+        .hidden { display: none !important; }
+
+        /* ورود */
+        .login-screen { max-width: 360px; margin: 80px auto 0 auto; background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+        .login-screen h2 { color: var(--primary); margin-bottom: 20px; }
+        .login-screen input { width: 100%; margin-bottom: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+        .login-screen button { width: 100%; padding: 12px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- بخش ورود -->
-    <div id="loginSection" class="login-container">
-        <h2>ورود به سیستم مدیریت ماساژ</h2>
-        <div class="input-group">
-            <label>نام کاربری:</label>
-            <input type="text" id="username" placeholder="نام کاربری را وارد کنید">
-        </div>
-        <div class="input-group">
-            <label>رمز عبور:</label>
-            <input type="password" id="password" placeholder="رمز عبور را وارد کنید">
-        </div>
-        <button class="btn" onclick="checkLogin()">ورود به پنل</button>
+<!-- صفحه ورود ایمن -->
+<div id="login-container" class="login-screen">
+    <h2>ورود به حساب مدیریت 🔐</h2>
+    <form id="login-form">
+        <input type="text" id="username" placeholder="نام کاربری" required autocomplete="off">
+        <input type="password" id="password" placeholder="رمز عبور" required>
+        <button type="submit">ورود ✨</button>
+    </form>
+</div>
+
+<!-- محتوای اصلی سایت -->
+<div id="main-content" class="container hidden">
+    <header>
+        <h2>سیستم هوشمند مجموعه ماساژ 👑💆‍♂️</h2>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
+        <button class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
+        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج 🚪</button>
     </div>
 
-    <!-- بخش اصلی نرم‌افزار -->
-    <div id="mainSection" class="main-container">
-        <div class="header">
-            <h2>سامانه حسابداری و مدیریت مجموعه 👑</h2>
-            <button class="btn btn-danger" style="width: auto;" onclick="logout()">خروج</button>
+    <!-- تب میز کار روزانه -->
+    <div id="daily-tab">
+        <div class="card" style="text-align: center;">
+            <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); font-size: 16px; padding: 12px 25px;">📅 شروع روز کاری جدید</button>
+            <h3 id="current-date-display" class="hidden" style="margin-top: 10px; color: var(--primary);"></h3>
         </div>
 
-        <div class="form-grid">
-            <div class="input-group">
-                <label>نام ماسور:</label>
-                <input type="text" id="masseurName">
+        <div id="workspace" class="card hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>جدول حساب‌کتاب امروز ✏️</h3>
+                <button onclick="addNewRow()" style="background-color: var(--info); padding: 6px 12px;">➕ افزودن ردیف ماسور جدید</button>
             </div>
-            <div class="input-group">
-                <label>نوع ماساژ:</label>
-                <input type="text" id="massageType">
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>۱. نام ماسور</th>
+                            <th>۲. مشتری ۱</th>
+                            <th>۳. مشتری ۲</th>
+                            <th>۴. مشتری ۳</th>
+                            <th>۵. مشتری ۴</th>
+                            <th>۶. مشتری ۵</th>
+                            <th>۷. مشتری ۶</th>
+                            <th>۸. درصد ماسور</th>
+                            <th>۹. درصد سالن</th>
+                            <th>۱۰. اخطار</th>
+                            <th>۱۱. امتیاز</th>
+                            <th>۱۲. جمع‌بندی ماسور</th>
+                            <th>۱۳. جمع‌بندی سالن</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="excel-body">
+                        <!-- ردیف‌ها با جاوااسکریپت اضافه می‌شوند -->
+                    </tbody>
+                </table>
             </div>
-            <div class="input-group">
-                <label>قیمت کل (تومان):</label>
-                <input type="number" id="totalPrice" oninput="calculateShares()">
-            </div>
-            <div class="input-group">
-                <label>سهم ماسور (تومان):</label>
-                <input type="number" id="masseurShare">
-            </div>
-            <div class="input-group">
-                <label>سهم مجموعه (تومان):</label>
-                <input type="number" id="salonShare">
-            </div>
-            <div class="input-group">
-                <label>مساعده دریافت شده (تومان):</label>
-                <input type="number" id="advancePayment" value="0">
-            </div>
-            <div class="input-group">
-                <label>بدهی قبلی (تومان):</label>
-                <input type="number" id="previousDebt" value="0">
+
+            <button onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border-radius: 8px;">🔒 پایان، ذخیره و آرشیو روز کاری</button>
+        </div>
+    </div>
+
+    <!-- تب صفحات اختصاصی -->
+    <div id="reports-tab" class="hidden">
+        <div class="card">
+            <h3>پرونده و زونکن اختصاصی پرسنل 📊</h3>
+            <select id="report-masseur-select" onchange="loadMasseurReport()" style="width: 100%; padding: 10px;">
+                <option value="">-- انتخاب ماسور --</option>
+            </select>
+
+            <div id="report-detail" class="hidden" style="margin-top: 20px;">
+                <h3 style="text-align: center;">زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
+                
+                <div class="summary-box">
+                    <div>جمع کل سهم ماسور: <span id="total-masseur-money">۰</span> ت</div>
+                    <div>جمع کل سهم سالن: <span id="total-salon-money">۰</span> ت</div>
+                    <div>کل امتیازها: ⭐ <span id="total-stars">۰</span></div>
+                    <div>کل اخطارها: ⚠️ <span id="total-warnings">۰</span></div>
+                </div>
+
+                <h4>تاریخچه روز به روز عملکرد:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تاریخ و روز</th>
+                                <th>مشتری ۱ تا ۶</th>
+                                <th>درصدها (M/S)</th>
+                                <th>اخطار</th>
+                                <th>امتیاز</th>
+                                <th>سهم ماسور</th>
+                                <th>سهم سالن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="archive-table-body"></tbody>
+                    </table>
+                </div>
+
+                <button class="btn-danger" style="width: 100%; margin-top: 15px; padding: 10px;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و حذف آرشیو این شخص</button>
             </div>
         </div>
+    </div>
+</div>
+
+<script>
+    const VALID_USER = "Arshaam";
+    const VALID_PASS = "6660488928";
+    let activeDate = "";
+
+    if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if(document.getElementById('username').value.trim() === VALID_USER && document.getElementById('password').value === VALID_PASS) {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            showMainContent();
+        } else { alert('خطا در ورود! ❌'); }
+    });
+
+    function showMainContent() {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+    }
+    function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.reload(); }
+
+    let archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if(tab === 'daily') {
+            document.getElementById('daily-tab').classList.remove('hidden');
+            document.getElementById('reports-tab').classList.add('hidden');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        } else {
+            document.getElementById('daily-tab').classList.add('hidden');
+            document.getElementById('reports-tab').classList.remove('hidden');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            updateMasseurDropdown();
+        }
+    }
+
+    // شروع روز جدید و گرفتن تاریخ شمسی سیستم
+    function startNewDay() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        activeDate = new Date().toLocaleDateString('fa-IR', options);
         
-        <button class="btn btn-success" onclick="addRecord()">ثبت اطلاعات در جدول</button>
+        document.getElementById('current-date-display').innerText = `📅 روز کاری: ${activeDate}`;
+        document.getElementById('current-date-display').classList.remove('hidden');
+        document.getElementById('workspace').classList.remove('hidden');
+        document.getElementById('start-day-btn').classList.add('hidden');
+        
+        document.getElementById('excel-body').innerHTML = '';
+        addNewRow(); // ایجاد اولین ردیف به صورت خودکار
+    }
 
-        <div id="pdfContent">
-            <table id="recordsTable">
-                <thead>
-                    <tr>
-                        <th>نام ماسور</th>
-                        <th>نوع ماساژ</th>
-                        <th>قیمت کل</th>
-                        <th>سهم ماسور</th>
-                        <th>سهم مجموعه</th>
-                        <th>مساعده</th>
-                        <th>بدهی قبلی</th>
-                        <th>وضعیت تسویه</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- داده‌ها اینجا اضافه می‌شوند -->
-                </tbody>
-            </table>
-        </div>
+    // افزودن سطر جدید به جدول اکسلی
+    function addNewRow() {
+        const tbody = document.getElementById('excel-body');
+        const rowId = Date.now();
+        const tr = document.createElement('tr');
+        tr.id = `row-${rowId}`;
+        tr.innerHTML = `
+            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور"></td>
+            <td><input type="number" class="table-input c1" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c2" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c3" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c4" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c5" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c6" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input p-masseur" value="60" oninput="calculateRow('${rowId}')">%</td>
+            <td><input type="number" class="table-input p-salon" value="40" oninput="calculateRow('${rowId}')">%</td>
+            <td><input type="number" class="table-input warning" value="0"></td>
+            <td><input type="number" class="table-input score" value="0"></td>
+            <td id="res-masseur-${rowId}" class="result-cell">0</td>
+            <td id="res-salon-${rowId}" class="salon-cell">0</td>
+            <td><button class="btn-danger" style="padding:4px 8px;" onclick="document.getElementById('row-${rowId}').remove()">❌</button></td>
+        `;
+        tbody.appendChild(tr);
+    }
 
-        <div class="actions-btn">
-            <button class="btn btn-info" onclick="exportToPDF()">📥 خروجی PDF آخر ماه</button>
-            <button class="btn btn-danger" onclick="clearAllData()">🗑️ پاک کردن کل جدول</button>
-        </div>
-    </div>
+    // محاسبه در لحظه ردیف
+    function calculateRow(rowId) {
+        const row = document.getElementById(`row-${rowId}`);
+        const c1 = +row.querySelector('.c1').value;
+        const c2 = +row.querySelector('.c2').value;
+        const c3 = +row.querySelector('.c3').value;
+        const c4 = +row.querySelector('.c4').value;
+        const c5 = +row.querySelector('.c5').value;
+        const c6 = +row.querySelector('.c6').value;
+        const pMasseur = +row.querySelector('.p-masseur').value;
+        const pSalon = +row.querySelector('.p-salon').value;
 
-    <script>
-        // بررسی ورود
-        function checkLogin() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
+        const totalClients = c1 + c2 + c3 + c4 + c5 + c6;
+        
+        const masseurShare = (totalClients * pMasseur) / 100;
+        const salonShare = (totalClients * pSalon) / 100;
 
-            if ((user === 'Arshaam' || user === 'shahin') && pass === '6660488928') {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('mainSection').style.display = 'block';
-                loadData();
-            } else {
-                alert('نام کاربری یا رمز عبور اشتباه است! ❌');
+        document.getElementById(`res-masseur-${rowId}`).innerText = Math.round(masseurShare).toLocaleString();
+        document.getElementById(`res-salon-${rowId}`).innerText = Math.round(salonShare).toLocaleString();
+    }
+
+    // ذخیره پایان روز در آرشیو اختصاصی پرسنل
+    function saveAndCloseDay() {
+        const rows = document.querySelectorAll('#excel-body tr');
+        if(rows.length === 0) { alert("ردیفی برای ذخیره وجود ندارد!"); return; }
+
+        let savedCount = 0;
+
+        rows.forEach(row => {
+            const name = row.querySelector('.masseur-name-input').value.trim();
+            if(!name) return; // اگر نام وارد نشده بود رد شو
+
+            const c1 = +row.querySelector('.c1').value;
+            const c2 = +row.querySelector('.c2').value;
+            const c3 = +row.querySelector('.c3').value;
+            const c4 = +row.querySelector('.c4').value;
+            const c5 = +row.querySelector('.c5').value;
+            const c6 = +row.querySelector('.c6').value;
+            const pMasseur = +row.querySelector('.p-masseur').value;
+            const pSalon = +row.querySelector('.p-salon').value;
+            const warning = +row.querySelector('.warning').value;
+            const score = +row.querySelector('.score').value;
+
+            const totalClients = c1 + c2 + c3 + c4 + c5 + c6;
+            const masseurShare = (totalClients * pMasseur) / 100;
+            const salonShare = (totalClients * pSalon) / 100;
+
+            if(!archive[name]) {
+                archive[name] = [];
             }
-        }
 
-        function logout() {
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('mainSection').style.display = 'none';
-        }
-
-        // محاسبه اتوماتیک سهم‌ها (50-50)
-        function calculateShares() {
-            const total = parseFloat(document.getElementById('totalPrice').value) || 0;
-            const half = total / 2;
-            document.getElementById('masseurShare').value = half;
-            document.getElementById('salonShare').value = half;
-        }
-
-        // اضافه کردن رکورد جدید
-        function addRecord() {
-            const name = document.getElementById('masseurName').value;
-            const type = document.getElementById('massageType').value;
-            const total = document.getElementById('totalPrice').value;
-            const masseur = document.getElementById('masseurShare').value;
-            const salon = document.getElementById('salonShare').value;
-            const advance = document.getElementById('advancePayment').value || 0;
-            const debt = document.getElementById('previousDebt').value || 0;
-
-            if(!name || !type || !total) {
-                alert('لطفاً نام ماسور، نوع ماساژ و قیمت کل را وارد کنید! ⚠️');
-                return;
-            }
-
-            const record = {
-                id: Date.now(),
-                name, type, total, masseur, salon, advance, debt, settled: false
-            };
-
-            let records = JSON.parse(localStorage.getItem('massage_records')) || [];
-            records.push(record);
-            localStorage.setItem('massage_records', JSON.stringify(records));
-
-            // ریست فرم
-            document.getElementById('masseurName').value = '';
-            document.getElementById('massageType').value = '';
-            document.getElementById('totalPrice').value = '';
-            document.getElementById('masseurShare').value = '';
-            document.getElementById('salonShare').value = '';
-            document.getElementById('advancePayment').value = '0';
-            document.getElementById('previousDebt').value = '0';
-
-            loadData();
-        }
-
-        // لود کردن داده‌ها در جدول
-        function loadData() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            let records = JSON.parse(localStorage.getItem('massage_records')) || [];
-
-            records.forEach(rec => {
-                const tr = document.createElement('tr');
-                if(rec.settled) tr.className = 'locked-row';
-
-                tr.innerHTML = `
-                    <td data-label="نام ماسور">${rec.name}</td>
-                    <td data-label="نوع ماساژ">${rec.type}</td>
-                    <td data-label="قیمت کل">${Number(rec.total).toLocaleString()}</td>
-                    <td data-label="سهم ماسور">${Number(rec.masseur).toLocaleString()}</td>
-                    <td data-label="سهم مجموعه">${Number(rec.salon).toLocaleString()}</td>
-                    <td data-label="مساعده">${Number(rec.advance).toLocaleString()}</td>
-                    <td data-label="بدهی قبلی">${Number(rec.debt).toLocaleString()}</td>
-                    <td data-label="وضعیت">${rec.settled ? '✅ تسویه شده' : '⏳ در جریان'}</td>
-                    <td data-label="عملیات">
-                        <button class="btn-settle" onclick="settleRow(${rec.id})" ${rec.settled ? 'disabled' : ''}>تسویه نهایی</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+            archive[name].push({
+                date: activeDate,
+                clients: [c1, c2, c3, c4, c5, c6],
+                perM: pMasseur,
+                perS: pSalon,
+                warning: warning,
+                score: score,
+                mShare: masseurShare,
+                sShare: salonShare
             });
-        }
+            savedCount++;
+        });
 
-        // قفل کردن و تسویه سطر
-        function settleRow(id) {
-            let records = JSON.parse(localStorage.getItem('massage_records')) || [];
-            records = records.map(rec => {
-                if(rec.id === id) rec.settled = true;
-                return rec;
-            });
-            localStorage.setItem('massage_records', JSON.stringify(records));
-            loadData();
+        if(savedCount > 0) {
+            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
+            alert(`اطلاعات روز ${activeDate} با موفقیت در صفحه اختصاصی پرسنل ذخیره شد! 🔒✨`);
+            
+            // بازنشانی صفحه به حالت اولیه
+            document.getElementById('workspace').classList.add('hidden');
+            document.getElementById('current-date-display').classList.add('hidden');
+            document.getElementById('start-day-btn').classList.remove('hidden');
+        } else {
+            alert("لطفاً نام ماسورها رو وارد کن ارشام جان! ✏️");
         }
+    }
 
-        // خروجی PDF
-        function exportToPDF() {
-            const element = document.getElementById('pdfContent');
-            const opt = {
-                margin:       10,
-                filename:     'گزارش_حسابداری_ماساژ.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
+    function updateMasseurDropdown() {
+        const select = document.getElementById('report-masseur-select');
+        select.innerHTML = '<option value="">-- انتخاب ماسور --</option>';
+        Object.keys(archive).forEach(name => {
+            select.innerHTML += `<option value="${name}">${name}</option>`;
+        });
+    }
 
-        // پاک کردن کل اطلاعات
-        function clearAllData() {
-            if(confirm('آیا مطمئن هستید که می‌خواهید کل اطلاعات جدول را پاک کنید؟ این عمل غیرقابل بازگشت است! ⚠️')) {
-                localStorage.removeItem('massage_records');
-                loadData();
-            }
+    // لود گزارش اختصاصی ماسور از روی آرشیو کامل دفتری
+    function loadMasseurReport() {
+        const name = document.getElementById('report-masseur-select').value;
+        const detailDiv = document.getElementById('report-detail');
+        if(!name || !archive[name]) { detailDiv.classList.add('hidden'); return; }
+
+        detailDiv.classList.remove('hidden');
+        document.getElementById('rep-name').innerText = name;
+
+        const data = archive[name];
+        const tbody = document.getElementById('archive-table-body');
+        tbody.innerHTML = '';
+
+        let tM = 0, tS = 0, tW = 0, tSt = 0;
+
+        data.forEach(day => {
+            tM += day.mShare;
+            tS += day.sShare;
+            tW += day.warning;
+            tSt += day.score;
+
+            // فیلتر کردن قیمت‌های مشتری برای نمایش خلاصه (بدون صفرهای اضافه)
+            const clientList = day.clients.filter(c => c > 0).map(c => c.toLocaleString()).join('، ') || 'بدون مشتری';
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${day.date}</b></td>
+                    <td>${clientList}</td>
+                    <td>${day.perM}% / ${day.perS}%</td>
+                    <td style="color:red; font-weight:bold;">${day.warning}</td>
+                    <td style="color:green; font-weight:bold;">${day.score}</td>
+                    <td>${Math.round(day.mShare).toLocaleString()}</td>
+                    <td>${Math.round(day.sShare).toLocaleString()}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('total-masseur-money').innerText = Math.round(tM).toLocaleString();
+        document.getElementById('total-salon-money').innerText = Math.round(tS).toLocaleString();
+        document.getElementById('total-warnings').innerText = tW;
+        document.getElementById('total-stars').innerText = tSt;
+    }
+
+    function clearMasseurData() {
+        const name = document.getElementById('report-masseur-select').value;
+        if(confirm(`آیا مطمئنی می‌خوای آرشیو ${name} رو کاملاً پاک و صفر کنی؟`)) {
+            delete archive[name];
+            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
+            updateMasseurDropdown();
+            document.getElementById('report-detail').classList.add('hidden');
+            alert("تسویه حساب با موفقیت انجام شد! 👍");
         }
-    </script>
+    }
+</script>
+
 </body>
-</html>
+    </html>
+    
