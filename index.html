@@ -3,174 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت مجموعه ماساژ</title>
-    <!-- کتابخانه PDF -->
+    <title>سیستم مدیریتی مجموعه ماساژ 👑🦁</title>
+    <!-- اضافه کردن کتابخانه ساخت پی‌دی‌اف -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
+        :root {
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --primary: #4a0e4e;
+            --secondary: #ffb142;
+            --success: #2ed573;
+            --danger: #ff4757;
+            --text: #2f3542;
+            --info: #1e90ff;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
+            font-family: Tahoma, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
             padding: 10px;
         }
         .login-container {
-            max-width: 360px;
-            margin: 80px auto;
-            background-color: #1e1e1e;
-            padding: 25px;
-            border-radius: 10px;
-            border: 1px solid #d4af37;
+            max-width: 400px;
+            margin: 100px auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             text-align: center;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.1);
         }
         .login-container h2 {
-            color: #d4af37;
-            margin-bottom: 20px;
-            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 25px;
         }
         .input-group {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             text-align: right;
         }
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #aaa;
-            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
         .input-group input {
             width: 100%;
-            padding: 10px;
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 5px;
-            color: #fff;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             box-sizing: border-box;
-            font-size: 14px;
-        }
-        .input-group input:focus {
-            border-color: #d4af37;
-            outline: none;
+            font-size: 16px;
         }
         .btn {
-            background: linear-gradient(45deg, #d4af37, #aa7c11);
-            color: #000;
+            background-color: var(--primary);
+            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             width: 100%;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn:hover {
+            opacity: 0.9;
+        }
         .main-container {
             display: none;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: #1e1e1e;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #333;
+            background: var(--card);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #d4af37;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        .header h2 { color: #d4af37; margin: 0; font-size: 18px; }
-        .btn-logout {
-            background: #ff4d4d;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .form-inline {
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            background: #252525;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .form-inline .input-group { margin-bottom: 0; }
-        .form-inline .input-group input { padding: 8px; font-size: 13px; }
-        .btn-add { margin-top: 10px; margin-bottom: 15px; }
-        
-        .table-responsive {
-            overflow-x: auto;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
-            background: #1a1a1a;
+            margin-top: 20px;
+            font-size: 14px;
         }
         th, td {
-            border: 1px solid #333;
-            padding: 10px 8px;
+            border: 1px solid #ddd;
+            padding: 12px 10px;
             text-align: center;
         }
         th {
-            background-color: #2d2d2d;
-            color: #d4af37;
+            background-color: var(--primary);
+            color: white;
         }
-        tr:nth-child(even) { background-color: #222; }
-        .locked-row { background-color: #1b3a1b !important; color: #85e085; }
-        
-        .btn-settle {
-            background: #2ed573;
-            color: #000;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
-        .btn-settle:disabled { background: #555; color: #aaa; cursor: not-allowed; }
-        
-        .footer-actions {
+        .locked-row {
+            background-color: #e2f0d9 !important;
+            color: #385723;
+        }
+        .actions-btn {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
-        .btn-pdf { background: linear-gradient(45deg, #1e90ff, #0066cc); color: white; }
-        .btn-clear { background: #ff4757; color: white; }
+        .btn-success { background-color: var(--success); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-info { background-color: var(--info); }
+        .btn-settle {
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-settle:disabled {
+            background-color: #a4b0be;
+            cursor: not-allowed;
+        }
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                background: #fff;
+                border-radius: 8px;
+                padding: 10px;
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+                display: flex;
+                justify-content: space-between;
+            }
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: var(--primary);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- فرم ورود دارک شیک -->
+    <!-- بخش ورود -->
     <div id="loginSection" class="login-container">
-        <h2>ورود به پنل مدیریت مجموعه 👑</h2>
+        <h2>ورود به سیستم مدیریت ماساژ</h2>
         <div class="input-group">
             <label>نام کاربری:</label>
-            <input type="text" id="username" placeholder="Arshaam">
+            <input type="text" id="username" placeholder="نام کاربری را وارد کنید">
         </div>
         <div class="input-group">
             <label>رمز عبور:</label>
-            <input type="password" id="password" placeholder="••••••••">
+            <input type="password" id="password" placeholder="رمز عبور را وارد کنید">
         </div>
-        <button class="btn" onclick="checkLogin()">ورود</button>
+        <button class="btn" onclick="checkLogin()">ورود به پنل</button>
     </div>
 
-    <!-- بخش اصلی با همان تم اصیل -->
+    <!-- بخش اصلی نرم‌افزار -->
     <div id="mainSection" class="main-container">
         <div class="header">
-            <h2>مدیریت و حسابداری مجموعه ماساژ ✨</h2>
-            <button class="btn-logout" onclick="logout()">خروج</button>
+            <h2>سامانه حسابداری و مدیریت مجموعه 👑</h2>
+            <button class="btn btn-danger" style="width: auto;" onclick="logout()">خروج</button>
         </div>
 
-        <div class="form-inline">
+        <div class="form-grid">
             <div class="input-group">
                 <label>نام ماسور:</label>
                 <input type="text" id="masseurName">
@@ -184,26 +208,26 @@
                 <input type="number" id="totalPrice" oninput="calculateShares()">
             </div>
             <div class="input-group">
-                <label>سهم ماسور:</label>
+                <label>سهم ماسور (تومان):</label>
                 <input type="number" id="masseurShare">
             </div>
             <div class="input-group">
-                <label>سهم مجموعه:</label>
+                <label>سهم مجموعه (تومان):</label>
                 <input type="number" id="salonShare">
             </div>
             <div class="input-group">
-                <label>مساعده:</label>
+                <label>مساعده دریافت شده (تومان):</label>
                 <input type="number" id="advancePayment" value="0">
             </div>
             <div class="input-group">
-                <label>بدهی قبلی:</label>
+                <label>بدهی قبلی (تومان):</label>
                 <input type="number" id="previousDebt" value="0">
             </div>
         </div>
         
-        <button class="btn btn-add" onclick="addRecord()">➕ ثبت در جدول</button>
+        <button class="btn btn-success" onclick="addRecord()">ثبت اطلاعات در جدول</button>
 
-        <div class="table-responsive" id="pdfContent">
+        <div id="pdfContent">
             <table id="recordsTable">
                 <thead>
                     <tr>
@@ -214,29 +238,35 @@
                         <th>سهم مجموعه</th>
                         <th>مساعده</th>
                         <th>بدهی قبلی</th>
-                        <th>وضعیت</th>
+                        <th>وضعیت تسویه</th>
                         <th>عملیات</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody"></tbody>
+                <tbody id="tableBody">
+                    <!-- داده‌ها اینجا اضافه می‌شوند -->
+                </tbody>
             </table>
         </div>
 
-        <div class="footer-actions">
-            <button class="btn btn-pdf" onclick="exportToPDF()">📥 خروجی PDF</button>
-            <button class="btn btn-clear" onclick="clearAllData()">🗑️ پاک کردن کل جدول</button>
+        <div class="actions-btn">
+            <button class="btn btn-info" onclick="exportToPDF()">📥 خروجی PDF آخر ماه</button>
+            <button class="btn btn-danger" onclick="clearAllData()">🗑️ پاک کردن کل جدول</button>
         </div>
     </div>
 
     <script>
+        // بررسی ورود
         function checkLogin() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
+
             if ((user === 'Arshaam' || user === 'shahin') && pass === '6660488928') {
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('mainSection').style.display = 'block';
                 loadData();
-            } else { alert('خطا در ورود! ❌'); }
+            } else {
+                alert('نام کاربری یا رمز عبور اشتباه است! ❌');
+            }
         }
 
         function logout() {
@@ -244,12 +274,15 @@
             document.getElementById('mainSection').style.display = 'none';
         }
 
+        // محاسبه اتوماتیک سهم‌ها (50-50)
         function calculateShares() {
             const total = parseFloat(document.getElementById('totalPrice').value) || 0;
-            document.getElementById('masseurShare').value = total / 2;
-            document.getElementById('salonShare').value = total / 2;
+            const half = total / 2;
+            document.getElementById('masseurShare').value = half;
+            document.getElementById('salonShare').value = half;
         }
 
+        // اضافه کردن رکورد جدید
         function addRecord() {
             const name = document.getElementById('masseurName').value;
             const type = document.getElementById('massageType').value;
@@ -259,13 +292,21 @@
             const advance = document.getElementById('advancePayment').value || 0;
             const debt = document.getElementById('previousDebt').value || 0;
 
-            if(!name || !type || !total) { alert('فیلدها را کامل کنید! ⚠️'); return; }
+            if(!name || !type || !total) {
+                alert('لطفاً نام ماسور، نوع ماساژ و قیمت کل را وارد کنید! ⚠️');
+                return;
+            }
 
-            const record = { id: Date.now(), name, type, total, masseur, salon, advance, debt, settled: false };
+            const record = {
+                id: Date.now(),
+                name, type, total, masseur, salon, advance, debt, settled: false
+            };
+
             let records = JSON.parse(localStorage.getItem('massage_records')) || [];
             records.push(record);
             localStorage.setItem('massage_records', JSON.stringify(records));
 
+            // ریست فرم
             document.getElementById('masseurName').value = '';
             document.getElementById('massageType').value = '';
             document.getElementById('totalPrice').value = '';
@@ -273,9 +314,11 @@
             document.getElementById('salonShare').value = '';
             document.getElementById('advancePayment').value = '0';
             document.getElementById('previousDebt').value = '0';
+
             loadData();
         }
 
+        // لود کردن داده‌ها در جدول
         function loadData() {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
@@ -284,37 +327,55 @@
             records.forEach(rec => {
                 const tr = document.createElement('tr');
                 if(rec.settled) tr.className = 'locked-row';
+
                 tr.innerHTML = `
-                    <td>${rec.name}</td>
-                    <td>${rec.type}</td>
-                    <td>${Number(rec.total).toLocaleString()}</td>
-                    <td>${Number(rec.masseur).toLocaleString()}</td>
-                    <td>${Number(rec.salon).toLocaleString()}</td>
-                    <td>${Number(rec.advance).toLocaleString()}</td>
-                    <td>${Number(rec.debt).toLocaleString()}</td>
-                    <td>${rec.settled ? '✅ تسویه' : '⏳ در جریان'}</td>
-                    <td><button class="btn-settle" onclick="settleRow(${rec.id})" ${rec.settled ? 'disabled' : ''}>تسویه</button></td>
+                    <td data-label="نام ماسور">${rec.name}</td>
+                    <td data-label="نوع ماساژ">${rec.type}</td>
+                    <td data-label="قیمت کل">${Number(rec.total).toLocaleString()}</td>
+                    <td data-label="سهم ماسور">${Number(rec.masseur).toLocaleString()}</td>
+                    <td data-label="سهم مجموعه">${Number(rec.salon).toLocaleString()}</td>
+                    <td data-label="مساعده">${Number(rec.advance).toLocaleString()}</td>
+                    <td data-label="بدهی قبلی">${Number(rec.debt).toLocaleString()}</td>
+                    <td data-label="وضعیت">${rec.settled ? '✅ تسویه شده' : '⏳ در جریان'}</td>
+                    <td data-label="عملیات">
+                        <button class="btn-settle" onclick="settleRow(${rec.id})" ${rec.settled ? 'disabled' : ''}>تسویه نهایی</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
+        // قفل کردن و تسویه سطر
         function settleRow(id) {
             let records = JSON.parse(localStorage.getItem('massage_records')) || [];
-            records = records.map(rec => { if(rec.id === id) rec.settled = true; return rec; });
+            records = records.map(rec => {
+                if(rec.id === id) rec.settled = true;
+                return rec;
+            });
             localStorage.setItem('massage_records', JSON.stringify(records));
             loadData();
         }
 
+        // خروجی PDF
         function exportToPDF() {
             const element = document.getElementById('pdfContent');
-            html2pdf().set({ margin: 5, filename: 'گزارش_ماساژ.pdf', html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'landscape' } }).from(element).save();
+            const opt = {
+                margin:       10,
+                filename:     'گزارش_حسابداری_ماساژ.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
         }
 
+        // پاک کردن کل اطلاعات
         function clearAllData() {
-            if(confirm('کل جدول پاک شود؟')) { localStorage.removeItem('massage_records'); loadData(); }
+            if(confirm('آیا مطمئن هستید که می‌خواهید کل اطلاعات جدول را پاک کنید؟ این عمل غیرقابل بازگشت است! ⚠️')) {
+                localStorage.removeItem('massage_records');
+                loadData();
+            }
         }
     </script>
 </body>
-    </html>
-    
+</html>
