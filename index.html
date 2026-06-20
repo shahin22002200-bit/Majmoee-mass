@@ -62,11 +62,11 @@
 
 <div id="login-container" class="login-screen">
     <h2>ورود به حساب مدیریت 🔐</h2>
-    <form id="login-form">
-        <input type="text" id="username" placeholder="نام کاربری" required autocomplete="off">
-        <input type="password" id="password" placeholder="رمز عبور" required>
-        <button type="submit">ورود ✨</button>
-    </form>
+    <div id="login-form">
+        <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
+        <input type="password" id="password" placeholder="رمز عبور">
+        <button type="button" onclick="checkLogin()">ورود ✨</button>
+    </div>
 </div>
 
 <div id="main-content" class="container hidden">
@@ -178,12 +178,21 @@
 
     if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
 
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if(document.getElementById('username').value.trim() === VALID_USER && document.getElementById('password').value === VALID_PASS) {
+    function checkLogin() {
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value;
+        if(user === VALID_USER && pass === VALID_PASS) {
             sessionStorage.setItem('isLoggedIn', 'true');
             showMainContent();
         } else { alert('خطا در ورود! ❌'); }
+    }
+
+    // اجازه ورود با دکمه Enter کیبورد
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { checkLogin(); }
+    });
+    document.getElementById('username').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { checkLogin(); }
     });
 
     function showMainContent() {
@@ -399,11 +408,4 @@
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
-        html2pdf().set(opt).from(element).save();
-    }
-
-    function clearMasseurData() {
-        const name = document.getElementById('report-masseur-select').value;
-        if(confirm(`آیا مطمئنی می‌خوای آرشیو ${name} رو کاملاً پاک و صفر کنی؟`)) {
-            delete archive[name];
-            localStorag
+        html2pdf
