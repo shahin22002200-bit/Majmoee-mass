@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم مدیریتی مجموعه ماساژ 👑💆‍♂️</title>
+    <!-- لود فونت فوق‌العاده شیک و مدرن وزیر از سرور آنلاین -->
     <link href="https://cdn.jsdelivr.net/npm/vazirmatn@30.1.0/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {
@@ -46,7 +47,7 @@
         /* استایل مینیمال و شیک جدول اکسلی */
         .table-wrapper { overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
         table { width: 100%; border-collapse: collapse; min-width: 1400px; background: white; text-align: center; font-size: 13px; }
-        th, td { border: 1px solid #edeec9; padding: 10px 8px; border: 1px solid var(--border); }
+        th, td { border: 1px solid var(--border); padding: 10px 8px; }
         th { background-color: var(--primary); color: white; font-weight: 600; font-size: 13px; letter-spacing: -0.2px; }
         tr:nth-child(even) { background-color: #fcfcfd; }
         tr:hover { background-color: #f5f6fa; }
@@ -70,15 +71,17 @@
 </head>
 <body>
 
+<!-- صفحه ورود ایمن -->
 <div id="login-container" class="login-screen">
     <h2>ورود به حساب مدیریت 🔐</h2>
-    <form id="login-form">
-        <input type="text" id="username" placeholder="نام کاربری" required autocomplete="off">
-        <input type="password" id="password" placeholder="رمز عبور" required>
-        <button type="submit">ورود به سیستم ✨</button>
-    </form>
+    <div>
+        <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
+        <input type="password" id="password" placeholder="رمز عبور">
+        <button type="button" onclick="checkLogin()">ورود به سیستم ✨</button>
+    </div>
 </div>
 
+<!-- محتوای اصلی سایت -->
 <div id="main-content" class="container hidden">
     <header>
         <h2>سیستم هوشمند مجموعه ماساژ 👑💆‍♂️</h2>
@@ -90,6 +93,7 @@
         <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج از سیستم 🚪</button>
     </div>
 
+    <!-- تب میز کار روزانه -->
     <div id="daily-tab">
         <div class="card" style="text-align: center; padding: 30px 20px;">
             <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); color: #2c003e; font-size: 16px; padding: 14px 35px; border-radius: 10px; box-shadow: 0 4px 15px rgba(223,184,108,0.3);">📅 شروع روز کاری جدید</button>
@@ -125,7 +129,8 @@
                         </tr>
                     </thead>
                     <tbody id="excel-body">
-                        </tbody>
+                        <!-- ردیف‌ها با جاوااسکریپت اضافه می‌شوند -->
+                    </tbody>
                 </table>
             </div>
 
@@ -133,6 +138,7 @@
         </div>
     </div>
 
+    <!-- تب صفحات اختصاصی -->
     <div id="reports-tab" class="hidden">
         <div class="card">
             <h3>پرونده و زونکن اختصاصی پرسنل 📊</h3>
@@ -183,13 +189,17 @@
 
     if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
 
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if(document.getElementById('username').value.trim() === VALID_USER && document.getElementById('password').value === VALID_PASS) {
+    function checkLogin() {
+        const userInp = document.getElementById('username').value.trim();
+        const passInp = document.getElementById('password').value;
+
+        if(userInp === VALID_USER && passInp === VALID_PASS) {
             sessionStorage.setItem('isLoggedIn', 'true');
             showMainContent();
-        } else { alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); }
-    });
+        } else { 
+            alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); 
+        }
+    }
 
     function showMainContent() {
         document.getElementById('login-container').classList.add('hidden');
@@ -376,8 +386,4 @@
 
         if(savedCount > 0) {
             localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
-            alert(`اطلاعات روز ${activeDate} با موفقیت در صفحه اختصاصی پرسنل ذخیره شد! 🔒✨`);
-            clearDraft(); 
-            
-            document.getElementById('workspace').classList.add('hidden');
-            document.getElementById('current-date
+            alert(`اطلاعات روز ${activeDate} با موفق
