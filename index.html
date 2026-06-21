@@ -54,6 +54,18 @@
         .login-screen h2 { color: var(--primary); margin-bottom: 20px; }
         .login-screen input { width: 100%; margin-bottom: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
         .login-screen button { width: 100%; padding: 12px; border-radius: 8px; }
+
+        /* تنظیمات چاپ رسمی و تمیز برای خروجی PDF */
+        @media print {
+            body { background: white; color: black; padding: 0; }
+            .tabs, header, #login-container, button, select, .action-buttons { display: none !important; }
+            .card { box-shadow: none; padding: 0; margin: 0; border: none; }
+            .table-wrapper { overflow: visible; }
+            table { min-width: 100% !important; page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            th { background-color: #555 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .summary-box { background: #eee !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border: 1px solid #ccc; }
+        }
     </style>
 </head>
 <body>
@@ -113,7 +125,7 @@
                         </tr>
                     </thead>
                     <tbody id="excel-body">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
 
@@ -129,7 +141,10 @@
             </select>
 
             <div id="report-detail" class="hidden" style="margin-top: 20px;">
-                <h3 style="text-align: center;">زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
+                <div style="display: flex; justify-content: space-between; align-items: center;" class="action-buttons">
+                    <h3>زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
+                    <button onclick="printReportToPDF()" style="background-color: #2ed573; padding: 8px 15px;">📄 خروجی PDF / پرینت فاکتور</button>
+                </div>
                 
                 <div class="summary-box">
                     <div>جمع صافی طلب ماسور: <span id="total-masseur-money">۰</span> ت</div>
@@ -140,7 +155,7 @@
 
                 <h4>تاریخچه روز به روز عملکرد:</h4>
                 <div class="table-wrapper">
-                    <table>
+                    <table id="printable-archive-table">
                         <thead>
                             <tr>
                                 <th>تاریخ و روز</th>
@@ -158,7 +173,9 @@
                     </table>
                 </div>
 
-                <button style="background-color: var(--danger); width: 100%; margin-top: 15px; padding: 10px; font-weight: bold; border-radius: 6px;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و حذف آرشیو این شخص</button>
+                <div class="action-buttons" style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button style="background-color: var(--danger); flex: 1; padding: 12px; font-weight: bold; border-radius: 6px;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و صفر کردن آرشیو این شخص</button>
+                </div>
             </div>
         </div>
     </div>
@@ -166,7 +183,7 @@
 
 <script>
     const VALID_USER = "Arshaam";
-    const VALID_PASS = "6660488928";
+    const VALID_PASS = "488928";
     let activeDate = "";
 
     if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
@@ -176,11 +193,11 @@
         const p = document.getElementById('password').value;
         if(u === VALID_USER && p === VALID_PASS) {
             sessionStorage.setItem('isLoggedIn', 'true');
+            alert('خوش آمدید ارشام جان! 👑💆‍♂️');
             showMainContent();
         } else { alert('خطا در ورود! ❌'); }
     }
 
-    // بازگرداندن قابلیت ورود با زدن Enter کیبورد ⌨️
     document.getElementById('password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') { checkLogin(); }
     });
@@ -240,8 +257,8 @@
             <td><input type="number" class="table-input p-salon" value="40" oninput="calculateRow('${rowId}')">%</td>
             <td><input type="number" class="table-input advance" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input debt" value="0" oninput="calculateRow('${rowId}')"></td>
-            <td><input type="number" class="table-input warning" value="0"></td>
-            <td><input type="number" class="table-input score" value="0"></td>
+            <td><input type="number" class="table-input warning" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input score" value="0" oninput="calculateRow('${rowId}')"></td>
             <td id="res-masseur-${rowId}" class="result-cell">0</td>
             <td id="res-salon-${rowId}" class="salon-cell">0</td>
             <td><button style="background-color:var(--danger); padding:4px 8px;" onclick="document.getElementById('row-${rowId}').remove()">❌</button></td>
@@ -292,8 +309,6 @@
             const pSalon = +row.querySelector('.p-salon').value;
             const advance = +row.querySelector('.advance').value;
             const debt = +row.querySelector('.debt').value;
-            
-            // اصلاح باگ ذخیره به صورت عدد به جای متن (+ اضافه شد) 🛠️
             const warning = +row.querySelector('.warning').value;
             const score = +row.querySelector('.score').value;
 
@@ -382,17 +397,11 @@
         document.getElementById('total-stars').innerText = tSt;
     }
 
+    function printReportToPDF() {
+        window.print();
+    }
+
     function clearMasseurData() {
         const name = document.getElementById('report-masseur-select').value;
-        if(confirm(`آیا مطمئنی می‌خوای آرشیو ${name} رو کاملاً پاک و صفر کنی؟`)) {
-            delete archive[name];
-            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
-            updateMasseurDropdown();
-            document.getElementById('report-detail').classList.add('hidden');
-            alert("تسویه حساب با موفقیت انجام شد! 👍");
-        }
-    }
-</script>
-
-</body>
-</html>
+        if(confirm(`آیا مطمئنی می‌خوای آرشیو و حساب‌های ${name} رو کاملاً پاک و تسویه کنی؟`)) {
+            delete
