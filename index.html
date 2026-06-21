@@ -212,77 +212,17 @@
         document.getElementById('start-day-btn').classList.add('hidden');
         
         document.getElementById('excel-body').innerHTML = '';
-        
-        // بررسی وجود اطلاعات ذخیره شده موقت از قبل رفرش صفحه
-        const savedDraft = localStorage.getItem('daily_workspace_draft');
-        if (savedDraft) {
-            restoreWorkspaceDraft(JSON.parse(savedDraft));
-        } else {
-            addNewRow(); // ایجاد اولین ردیف به صورت خودکار در صورتی که دفتری از قبل نبود
-        }
-    }
-
-    // تابع کمکی برای ذخیره کردن آنی وضعیت جدول در LocalStorage
-    function saveWorkspaceDraft() {
-        const rows = document.querySelectorAll('#excel-body tr');
-        const draftData = [];
-        
-        rows.forEach(row => {
-            const rowId = row.id.replace('row-', '');
-            draftData.push({
-                rowId: rowId,
-                name: row.querySelector('.masseur-name-input').value,
-                c1: row.querySelector('.c1').value,
-                c2: row.querySelector('.c2').value,
-                c3: row.querySelector('.c3').value,
-                c4: row.querySelector('.c4').value,
-                c5: row.querySelector('.c5').value,
-                c6: row.querySelector('.c6').value,
-                pMasseur: row.querySelector('.p-masseur').value,
-                pSalon: row.querySelector('.p-salon').value,
-                advance: row.querySelector('.advance').value,
-                debt: row.querySelector('.debt').value,
-                warning: row.querySelector('.warning').value,
-                score: row.querySelector('.score').value
-            });
-        });
-        
-        localStorage.setItem('daily_workspace_draft', JSON.stringify(draftData));
-    }
-
-    // بازگردانی اطلاعات پیش‌نویس جدول بعد از رفرش یا ورود مجدد
-    function restoreWorkspaceDraft(draftData) {
-        draftData.forEach(data => {
-            addNewRow(data.rowId);
-            const row = document.getElementById(`row-${data.rowId}`);
-            if (row) {
-                row.querySelector('.masseur-name-input').value = data.name;
-                row.querySelector('.c1').value = data.c1;
-                row.querySelector('.c2').value = data.c2;
-                row.querySelector('.c3').value = data.c3;
-                row.querySelector('.c4').value = data.c4;
-                row.querySelector('.c5').value = data.c5;
-                row.querySelector('.c6').value = data.c6;
-                row.querySelector('.p-masseur').value = data.pMasseur;
-                row.querySelector('.p-salon').value = data.pSalon;
-                row.querySelector('.advance').value = data.advance;
-                row.querySelector('.debt').value = data.debt;
-                row.querySelector('.warning').value = data.warning;
-                row.querySelector('.score').value = data.score;
-                
-                calculateRow(data.rowId);
-            }
-        });
+        addNewRow(); // ایجاد اولین ردیف به صورت خودکار
     }
 
     // افزودن سطر جدید به جدول اکسلی
-    function addNewRow(customId = null) {
+    function addNewRow() {
         const tbody = document.getElementById('excel-body');
-        const rowId = customId || Date.now();
+        const rowId = Date.now();
         const tr = document.createElement('tr');
         tr.id = `row-${rowId}`;
         tr.innerHTML = `
-            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور" oninput="saveWorkspaceDraft()"></td>
+            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور"></td>
             <td><input type="number" class="table-input c1" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input c2" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input c3" value="0" oninput="calculateRow('${rowId}')"></td>
@@ -293,14 +233,13 @@
             <td><input type="number" class="table-input p-salon" value="40" oninput="calculateRow('${rowId}')">%</td>
             <td><input type="number" class="table-input advance" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input debt" value="0" oninput="calculateRow('${rowId}')"></td>
-            <td><input type="number" class="table-input warning" value="0" oninput="saveWorkspaceDraft()"></td>
-            <td><input type="number" class="table-input score" value="0" oninput="saveWorkspaceDraft()"></td>
+            <td><input type="number" class="table-input warning" value="0"></td>
+            <td><input type="number" class="table-input score" value="0"></td>
             <td id="res-masseur-${rowId}" class="result-cell">0</td>
             <td id="res-salon-${rowId}" class="salon-cell">0</td>
-            <td><button class="btn-danger" style="padding:4px 8px; background-color: var(--danger); color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="document.getElementById('row-${rowId}').remove(); saveWorkspaceDraft();">❌</button></td>
+            <td><button class="btn-danger" style="padding:4px 8px; background-color: var(--danger); color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="document.getElementById('row-${rowId}').remove()">❌</button></td>
         `;
         tbody.appendChild(tr);
-        saveWorkspaceDraft();
     }
 
     // محاسبه در لحظه ردیف
@@ -325,9 +264,6 @@
 
         document.getElementById(`res-masseur-${rowId}`).innerText = Math.round(masseurShare).toLocaleString();
         document.getElementById(`res-salon-${rowId}`).innerText = Math.round(salonShare).toLocaleString();
-        
-        // ذخیره تغییرات فیلدهای عددی پس از هر بار محاسبه
-        saveWorkspaceDraft();
     }
 
     // ذخیره پایان روز در آرشیو اختصاصی پرسنل
@@ -380,10 +316,6 @@
 
         if(savedCount > 0) {
             localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
-            
-            // پاک کردن پیش‌نویس موقت روز جاری چون با موفقیت آرشیو نهایی شد
-            localStorage.removeItem('daily_workspace_draft');
-            
             alert(`اطلاعات روز ${activeDate} با موفقیت در صفحه اختصاصی پرسنل ذخیره شد! 🔒✨`);
             
             // بازنشانی صفحه به حالت اولیه
@@ -406,4 +338,64 @@
     // لود گزارش اختصاصی ماسور از روی آرشیو کامل دفتری
     function loadMasseurReport() {
         const name = document.getElementById('report-masseur-select').value;
-        const detailDiv = document.getElemen
+        const detailDiv = document.getElementById('report-detail');
+        if(!name || !archive[name]) { detailDiv.classList.add('hidden'); return; }
+
+        detailDiv.classList.remove('hidden');
+        document.getElementById('rep-name').innerText = name;
+
+        const data = archive[name];
+        const tbody = document.getElementById('archive-table-body');
+        tbody.innerHTML = '';
+
+        let tM = 0, tS = 0, tW = 0, tSt = 0;
+
+        data.forEach(day => {
+            tM += day.mShare;
+            tS += day.sShare;
+            tW += day.warning;
+            tSt += day.score;
+
+            // فیلتر کردن قیمت‌های مشتری برای نمایش خلاصه (بدون صفرهای اضافه)
+            const clientList = day.clients.filter(c => c > 0).map(c => c.toLocaleString()).join('، ') || 'بدون مشتری';
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${day.date}</b></td>
+                    <td>${clientList}</td>
+                    <td>${day.perM}% / ${day.perS}%</td>
+                    <td style="color:#ff4757;">${(day.advance || 0).toLocaleString()}</td>
+                    <td style="color:#1e90ff;">${(day.debt || 0).toLocaleString()}</td>
+                    <td style="color:red; font-weight:bold;">${day.warning}</td>
+                    <td style="color:green; font-weight:bold;">${day.score}</td>
+                    <td>${Math.round(day.mShare).toLocaleString()}</td>
+                    <td>${Math.round(day.sShare).toLocaleString()}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('total-masseur-money').innerText = Math.round(tM).toLocaleString();
+        document.getElementById('total-salon-money').innerText = Math.round(tS).toLocaleString();
+        document.getElementById('total-warnings').innerText = tW;
+        document.getElementById('total-stars').innerText = tSt;
+    }
+
+    function clearMasseurData() {
+        const name = document.getElementById('report-masseur-select').value;
+        if(confirm(`آیا مطمئنی می‌خوای آرشیو ${name} رو کاملاً پاک و صفر کنی؟`)) {
+            delete archive[name];
+            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
+            updateMasseurDropdown();
+            document.getElementById('report-detail').classList.add('hidden');
+            alert("تسویه حساب با موفقیت انجام شد! 👍");
+        }
+    }
+</script>
+
+</body>
+</html>
+
+
+هیچ چیز دست نخوره 
+
+فقط میخام وقتی میام بیرون خروج رو میزنم مبالغ مشتریایی ک نوشتم نپره چون وقتی دارم میتونیسم ی موقع برق میره نت قطع میشه بعدش رفلش میشه همش میپره
