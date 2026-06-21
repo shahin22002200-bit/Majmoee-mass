@@ -61,28 +61,12 @@
 
         .summary-box { display: flex; justify-content: space-between; background: linear-gradient(135deg, #fbf4e7, #f5e6cc); color: #795548; padding: 16px; border-radius: 12px; margin-top: 15px; font-weight: 700; border: 1px solid #e6d3b3; font-size: 14px; }
         .hidden { display: none !important; }
-
-        /* صفحه ورود شیک و VIP */
-        .login-screen { max-width: 380px; margin: 100px auto 0 auto; background: var(--card); padding: 35px; border-radius: 20px; box-shadow: 0 20px 50px rgba(44,0,62,0.07); text-align: center; border: 1px solid rgba(0,0,0,0.01); }
-        .login-screen h2 { color: var(--primary); margin-bottom: 25px; font-weight: 800; font-size: 22px; }
-        .login-screen input { width: 100%; margin-bottom: 15px; padding: 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
-        .login-screen button { width: 100%; padding: 14px; border-radius: 10px; font-size: 15px; justify-content: center; background-color: var(--primary); }
     </style>
 </head>
 <body>
 
-<!-- صفحه ورود ایمن -->
-<div id="login-container" class="login-screen">
-    <h2>ورود به حساب مدیریت 🔐</h2>
-    <div>
-        <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
-        <input type="password" id="password" placeholder="رمز عبور">
-        <button type="button" onclick="checkLogin()">ورود به سیستم ✨</button>
-    </div>
-</div>
-
-<!-- محتوای اصلی سایت -->
-<div id="main-content" class="container hidden">
+<!-- محتوای اصلی سایت مستقیم و بدون نیاز به ورود باز می‌شود -->
+<div id="main-content" class="container">
     <header>
         <h2>سیستم هوشمند مجموعه ماساژ 👑💆‍♂️</h2>
     </header>
@@ -90,7 +74,6 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
         <button class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
-        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج از سیستم 🚪</button>
     </div>
 
     <!-- تب میز کار روزانه -->
@@ -183,38 +166,18 @@
 </div>
 
 <script>
-    const VALID_USER = "Arshaam";
-    const VALID_PASS = "6660488928";
     let activeDate = "";
-
-    // تابع اصلی بررسی ورود که بدون وابستگی به امنیت تب مرورگر مستقیماً صفحه رو باز میکنه
-    function checkLogin() {
-        const userInp = document.getElementById('username').value.trim();
-        const passInp = document.getElementById('password').value;
-
-        if(userInp === VALID_USER && passInp === VALID_PASS) {
-            showMainContent();
-        } else { 
-            alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); 
-        }
-    }
-
-    function showMainContent() {
-        document.getElementById('login-container').style.display = 'none';
-        document.getElementById('main-content').classList.remove('hidden');
-        checkDraft(); 
-    }
-    
-    function logout() { 
-        window.location.reload(); 
-    }
-
     let archive = {};
-    try {
-        archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
-    } catch(e) {
-        archive = {};
-    }
+
+    // اجرای خودکار بررسی حافظه بدون نیاز به صفحه ورود لودینگ
+    window.onload = function() {
+        try {
+            archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
+        } catch(e) {
+            archive = {};
+        }
+        checkDraft();
+    };
 
     function switchTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -392,4 +355,51 @@
                 score: score,
                 mShare: masseurShare,
                 sShare: salonShare
-      
+            });
+            savedCount++;
+        });
+
+        if(savedCount > 0) {
+            try {
+                localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
+            } catch(e) {}
+            alert(`اطلاعات روز ${activeDate} با موفقیت در صفحه اختصاصی پرسنل ذخیره شد! 🔒✨`);
+            clearDraft(); 
+            
+            document.getElementById('workspace').classList.add('hidden');
+            document.getElementById('current-date-display').classList.add('hidden');
+            document.getElementById('start-day-btn').classList.remove('hidden');
+        } else {
+            alert("لطفاً نام ماسورها را وارد کنید ارشام جان! ✏️");
+        }
+    }
+
+    function updateMasseurDropdown() {
+        const select = document.getElementById('report-masseur-select');
+        select.innerHTML = '<option value="">-- انتخاب ماسور مورد نظر --</option>';
+        Object.keys(archive).forEach(name => {
+            select.innerHTML += `<option value="${name}">${name}</option>`;
+        });
+    }
+
+    function loadMasseurReport() {
+        const name = document.getElementById('report-masseur-select').value;
+        const detailDiv = document.getElementById('report-detail');
+        if(!name || !archive[name]) { detailDiv.classList.add('hidden'); return; }
+
+        detailDiv.classList.remove('hidden');
+        document.getElementById('rep-name').innerText = name;
+
+        const data = archive[name];
+        const tbody = document.getElementById('archive-table-body');
+        tbody.innerHTML = '';
+
+        let tM = 0, tS = 0, tW = 0, tSt = 0;
+
+        data.forEach(day => {
+            tM += day.mShare;
+            tS += day.sShare;
+            tW += day.warning;
+            tSt += day.score;
+
+            const clientList = day.clients.filter(c => c > 0).map(c => c.toLocaleString()).join('، ') || 'بدون
