@@ -4,79 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم مدیریتی مجموعه ماساژ 👑💆‍♂️</title>
-    <link href="https://cdn.jsdelivr.net/npm/vazirmatn@30.1.0/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {
-            --bg: #f8f9fa;
+            --bg: #f4f6f9;
             --card: #ffffff;
-            --primary: #2c003e; /* بنفش سلطنتی تیره */
-            --secondary: #dfb86c; /* طلایی شامپاینی لوکس */
-            --secondary-hover: #cfab5f;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --text: #2d3436;
-            --border: #e0e0e0;
+            --primary: #4a0e4e;
+            --secondary: #ffb142;
+            --success: #2ed573;
+            --danger: #ff4757;
+            --text: #2f3542;
         }
         body {
-            font-family: Vazirmatn, sans-serif;
+            font-family: Tahoma, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 20px;
-            letter-spacing: -0.3px;
+            padding: 10px;
         }
         .container { max-width: 100%; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 25px; color: var(--primary); }
-        header h2 { font-weight: 800; font-size: 26px; margin: 0; letter-spacing: -0.5px; }
+        header { text-align: center; margin-bottom: 15px; color: var(--primary); }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        h3 { margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid #f1f2f6; color: var(--primary); }
         
-        .card { background: var(--card); padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(44, 0, 62, 0.04); margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.02); }
-        h3 { margin-top: 0; padding-bottom: 12px; border-bottom: 1px solid var(--border); color: var(--primary); font-weight: 700; font-size: 18px; }
+        input, select, button { padding: 8px; margin: 3px 0; border-radius: 6px; border: 1px solid #ced6e0; box-sizing: border-box; font-family: inherit; font-size: 13px; }
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { opacity: 0.9; }
         
-        input, select, button { padding: 10px 14px; margin: 4px 0; border-radius: 8px; border: 1px solid #dcdde1; box-sizing: border-box; font-family: inherit; font-size: 13px; transition: all 0.2s ease; }
-        input:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(44, 0, 62, 0.1); }
-        
-        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
-        button:hover { opacity: 0.95; transform: translateY(-1px); }
-        button:active { transform: translateY(0); }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .tab-btn { background-color: #eaeaea; color: #616161; border-radius: 8px; padding: 10px 20px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .tab-btn { background-color: #dcdde1; color: var(--text); }
         .tab-btn.active { background-color: var(--primary); color: white; }
 
-        /* استایل مینیمال و شیک جدول اکسلی */
-        .table-wrapper { overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
-        table { width: 100%; border-collapse: collapse; min-width: 1300px; background: white; text-align: center; font-size: 13px; }
-        th, td { border: 1px solid var(--border); padding: 10px 8px; }
-        th { background-color: var(--primary); color: white; font-weight: 600; font-size: 13px; letter-spacing: -0.2px; }
-        tr:nth-child(even) { background-color: #fcfcfd; }
-        tr:hover { background-color: #f5f6fa; }
+        /* استایل جدول اکسلی */
+        .table-wrapper { overflow-x: auto; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; min-width: 1400px; background: white; text-align: center; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 6px; }
+        th { background-color: #4a0e4e; color: white; font-weight: normal; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
         
-        .table-input { width: 100px; text-align: center; padding: 6px; margin: 0; border: 1px solid #dcdde1; border-radius: 6px; font-weight: 600; }
-        .masseur-name-input { width: 140px; font-weight: 700; color: var(--primary); border-color: rgba(44,0,62,0.2); }
-        
-        /* رنگ‌بندی ملایم و شیک سلول‌های محاسباتی */
-        .result-cell { font-weight: 700; color: #1b5e20; background: #e8f5e9; border-radius: 4px; }
-        .salon-cell { font-weight: 700; color: #4a148c; background: #f3e5f5; border-radius: 4px; }
+        .table-input { width: 80px; text-align: center; padding: 5px; margin: 0; border: 1px solid #ddd; border-radius: 4px; }
+        .masseur-name-input { width: 110px; font-weight: bold; }
+        .result-cell { font-weight: bold; color: #2ed573; background: #f0fff4; }
+        .salon-cell { font-weight: bold; color: #4a0e4e; background: #fbf0ff; }
 
-        .summary-box { display: flex; justify-content: space-between; background: linear-gradient(135deg, #fbf4e7, #f5e6cc); color: #795548; padding: 16px; border-radius: 12px; margin-top: 15px; font-weight: 700; border: 1px solid #e6d3b3; font-size: 14px; }
+        .summary-box { display: flex; justify-content: space-between; background: #eccc68; padding: 12px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
         .hidden { display: none !important; }
 
-        /* صفحه ورود شیک و VIP */
-        .login-screen { max-width: 380px; margin: 100px auto 0 auto; background: var(--card); padding: 35px; border-radius: 20px; box-shadow: 0 20px 50px rgba(44,0,62,0.07); text-align: center; border: 1px solid rgba(0,0,0,0.01); }
-        .login-screen h2 { color: var(--primary); margin-bottom: 25px; font-weight: 800; font-size: 22px; }
-        .login-screen input { width: 100%; margin-bottom: 15px; padding: 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
-        .login-screen button { width: 100%; padding: 14px; border-radius: 10px; font-size: 15px; justify-content: center; background-color: var(--primary); }
+        /* ورود */
+        .login-screen { max-width: 360px; margin: 80px auto 0 auto; background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+        .login-screen h2 { color: var(--primary); margin-bottom: 20px; }
+        .login-screen input { width: 100%; margin-bottom: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+        .login-screen button { width: 100%; padding: 12px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <div id="login-container" class="login-screen">
     <h2>ورود به حساب مدیریت 🔐</h2>
-    <div>
-        <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
-        <input type="password" id="password" placeholder="رمز عبور">
-        <button type="button" onclick="checkLogin()">ورود به سیستم ✨</button>
-    </div>
+    <form id="login-form">
+        <input type="text" id="username" placeholder="نام کاربری" required autocomplete="off">
+        <input type="password" id="password" placeholder="رمز عبور" required>
+        <button type="submit">ورود ✨</button>
+    </form>
 </div>
 
 <div id="main-content" class="container hidden">
@@ -87,19 +75,19 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
         <button class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
-        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج از سیستم 🚪</button>
+        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج 🚪</button>
     </div>
 
     <div id="daily-tab">
-        <div class="card" style="text-align: center; padding: 30px 20px;">
-            <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); color: #2c003e; font-size: 16px; padding: 14px 35px; border-radius: 10px; box-shadow: 0 4px 15px rgba(223,184,108,0.3);">📅 شروع روز کاری جدید</button>
-            <h3 id="current-date-display" class="hidden" style="margin-top: 15px; color: var(--primary); border: none; padding: 0; font-size: 18px;"></h3>
+        <div class="card" style="text-align: center;">
+            <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); font-size: 16px; padding: 12px 25px;">📅 شروع روز کاری جدید</button>
+            <h3 id="current-date-display" class="hidden" style="margin-top: 10px; color: var(--primary);"></h3>
         </div>
 
         <div id="workspace" class="card hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h3 style="border: none; padding: 0;">جدول حساب‌کتاب امروز ✏️</h3>
-                <button onclick="addNewRowAndSave()" style="background-color: #3498db; padding: 8px 16px; border-radius: 6px;">➕ افزودن ردیف ماسور جدید</button>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>جدول حساب‌کتاب امروز ✏️</h3>
+                <button onclick="addNewRow()" style="background-color: #1e90ff; padding: 6px 12px;">➕ افزودن ردیف ماسور جدید</button>
             </div>
             
             <div class="table-wrapper">
@@ -107,52 +95,56 @@
                     <thead>
                         <tr>
                             <th>۱. نام ماسور</th>
-                            <th>۲. مجموع کارکرد (تومان)</th>
-                            <th>۳. تعداد کل مشتریان</th>
-                            <th>۴. درصد ماسور</th>
-                            <th>۵. درصد سالن</th>
-                            <th>۶. مساعده (-)</th>
-                            <th>۷. بدهی قبلی (+)</th>
-                            <th>۸. اخطار</th>
-                            <th>۹. امتیاز</th>
-                            <th>۱۰. جمع‌بندی ماسور</th>
-                            <th>۱۱. جمع‌بندی سالن</th>
+                            <th>۲. مشتری ۱</th>
+                            <th>۳. مشتری ۲</th>
+                            <th>۴. مشتری ۳</th>
+                            <th>۵. مشتری ۴</th>
+                            <th>۶. مشتری ۵</th>
+                            <th>۷. مشتری ۶</th>
+                            <th>۸. درصد ماسور</th>
+                            <th>۹. درصد سالن</th>
+                            <th>۱۰. مساعده (-)</th>
+                            <th>۱۱. بدهی قبلی (+)</th>
+                            <th>۱۲. اخطار</th>
+                            <th>۱۳. امتیاز</th>
+                            <th>۱۴. جمع‌بندی ماسور</th>
+                            <th>۱۵. جمع‌بندی سالن</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
-                    <tbody id="excel-body"></tbody>
+                    <tbody id="excel-body">
+                        </tbody>
                 </table>
             </div>
 
-            <button onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 16px; font-size: 16px; margin-top: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(46,204,113,0.2);">🔒 پایان، ذخیره و آرشیو روز کاری</button>
+            <button onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border-radius: 8px;">🔒 پایان، ذخیره و آرشیو روز کاری</button>
         </div>
     </div>
 
     <div id="reports-tab" class="hidden">
         <div class="card">
             <h3>پرونده و زونکن اختصاصی پرسنل 📊</h3>
-            <select id="report-masseur-select" onchange="loadMasseurReport()" style="width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600;">
-                <option value="">-- انتخاب ماسور مورد نظر --</option>
+            <select id="report-masseur-select" onchange="loadMasseurReport()" style="width: 100%; padding: 10px;">
+                <option value="">-- انتخاب ماسور --</option>
             </select>
 
-            <div id="report-detail" class="hidden" style="margin-top: 25px;">
-                <h3 style="text-align: center; border: none; font-size: 20px;">زونکن پرسنلی: <span id="rep-name" style="color:var(--primary); font-weight: 800;"></span></h3>
+            <div id="report-detail" class="hidden" style="margin-top: 20px;">
+                <h3 style="text-align: center;">زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
                 
                 <div class="summary-box">
-                    <div>جمع کل سهم ماسور: <span id="total-masseur-money" style="color: #1b5e20;">۰</span> ت</div>
-                    <div>جمع کل سهم سالن: <span id="total-salon-money" style="color: #4a148c;">۰</span> ت</div>
+                    <div>جمع کل سهم ماسور: <span id="total-masseur-money">۰</span> ت</div>
+                    <div>جمع کل سهم سالن: <span id="total-salon-money">۰</span> ت</div>
                     <div>کل امتیازها: ⭐ <span id="total-stars">۰</span></div>
-                    <div>کل اخطارها: ⚠️ <span id="total-warnings" style="color: var(--danger);">۰</span></div>
+                    <div>کل اخطارها: ⚠️ <span id="total-warnings">۰</span></div>
                 </div>
 
-                <h4 style="margin-top: 25px; color: var(--primary); font-weight: 700;">تاریخچه روز به روز عملکرد پرسنل:</h4>
+                <h4>تاریخچه روز به روز عملکرد:</h4>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th>تاریخ و روز</th>
-                                <th>کل کارکرد</th>
-                                <th>تعداد مشتریان</th>
+                                <th>مشتری ۱ تا ۶</th>
                                 <th>درصدها (M/S)</th>
                                 <th>مساعده</th>
                                 <th>بدهی قبلی</th>
@@ -166,7 +158,7 @@
                     </table>
                 </div>
 
-                <button class="btn-danger" style="width: 100%; margin-top: 25px; padding: 14px; background-color: var(--danger); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; justify-content: center;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و حذف آرشیو این شخص</button>
+                <button class="btn-danger" style="width: 100%; margin-top: 15px; padding: 10px; background-color: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و حذف آرشیو این شخص</button>
             </div>
         </div>
     </div>
@@ -176,37 +168,24 @@
     const VALID_USER = "Arshaam";
     const VALID_PASS = "6660488928";
     let activeDate = "";
-    let archive = {};
 
-    try {
-        archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
-    } catch(e) {
-        archive = {};
-    }
+    if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
 
-    function checkLogin() {
-        const userInp = document.getElementById('username').value.trim();
-        const passInp = document.getElementById('password').value;
-
-        if(userInp === VALID_USER && passInp === VALID_PASS) {
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if(document.getElementById('username').value.trim() === VALID_USER && document.getElementById('password').value === VALID_PASS) {
+            sessionStorage.setItem('isLoggedIn', 'true');
             showMainContent();
-        } else { 
-            alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); 
-        }
-    }
+        } else { alert('خطا در ورود! ❌'); }
+    });
 
     function showMainContent() {
         document.getElementById('login-container').classList.add('hidden');
         document.getElementById('main-content').classList.remove('hidden');
-        checkDraft(); 
     }
-    
-    function logout() { 
-        document.getElementById('main-content').classList.add('hidden');
-        document.getElementById('login-container').classList.remove('hidden');
-        document.getElementById('username').value = "";
-        document.getElementById('password').value = "";
-    }
+    function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.reload(); }
+
+    let archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
 
     function switchTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -222,58 +201,7 @@
         }
     }
 
-    function checkDraft() {
-        try {
-            const savedDate = localStorage.getItem('massage_draft_date');
-            const savedRows = localStorage.getItem('massage_draft_rows');
-            
-            if (savedDate && savedRows) {
-                activeDate = savedDate;
-                document.getElementById('current-date-display').innerText = `📅 روز کاری: ${activeDate}`;
-                document.getElementById('current-date-display').classList.remove('hidden');
-                document.getElementById('workspace').classList.remove('hidden');
-                document.getElementById('start-day-btn').classList.add('hidden');
-                
-                const tbody = document.getElementById('excel-body');
-                tbody.innerHTML = savedRows;
-                
-                const rows = tbody.querySelectorAll('tr');
-                rows.forEach(row => {
-                    row.querySelectorAll('input').forEach(input => {
-                        input.value = input.getAttribute('value') || input.value;
-                    });
-                    const rowId = row.id.replace('row-', '');
-                    calculateRow(rowId);
-                });
-            }
-        } catch(e) {}
-    }
-
-    function autoSaveWorkspace() {
-        const tbody = document.getElementById('excel-body');
-        if(tbody.children.length > 0) {
-            const rows = tbody.querySelectorAll('tr');
-            rows.forEach(row => {
-                row.querySelectorAll('input').forEach(input => {
-                    input.setAttribute('value', input.value);
-                });
-            });
-            try {
-                localStorage.setItem('massage_draft_date', activeDate);
-                localStorage.setItem('massage_draft_rows', tbody.innerHTML);
-            } catch(e) {}
-        } else {
-            clearDraft();
-        }
-    }
-
-    function clearDraft() {
-        try {
-            localStorage.removeItem('massage_draft_date');
-            localStorage.removeItem('massage_draft_rows');
-        } catch(e) {}
-    }
-
+    // شروع روز جدید و گرفتن تاریخ شمسی سیستم
     function startNewDay() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         activeDate = new Date().toLocaleDateString('fa-IR', options);
@@ -284,55 +212,125 @@
         document.getElementById('start-day-btn').classList.add('hidden');
         
         document.getElementById('excel-body').innerHTML = '';
-        addNewRow(); 
+        
+        // بررسی وجود اطلاعات ذخیره شده موقت از قبل رفرش صفحه
+        const savedDraft = localStorage.getItem('daily_workspace_draft');
+        if (savedDraft) {
+            restoreWorkspaceDraft(JSON.parse(savedDraft));
+        } else {
+            addNewRow(); // ایجاد اولین ردیف به صورت خودکار در صورتی که دفتری از قبل نبود
+        }
     }
 
-    function addNewRowAndSave() {
-        addNewRow();
-        autoSaveWorkspace();
+    // تابع کمکی برای ذخیره کردن آنی وضعیت جدول در LocalStorage
+    function saveWorkspaceDraft() {
+        const rows = document.querySelectorAll('#excel-body tr');
+        const draftData = [];
+        
+        rows.forEach(row => {
+            const rowId = row.id.replace('row-', '');
+            draftData.push({
+                rowId: rowId,
+                name: row.querySelector('.masseur-name-input').value,
+                c1: row.querySelector('.c1').value,
+                c2: row.querySelector('.c2').value,
+                c3: row.querySelector('.c3').value,
+                c4: row.querySelector('.c4').value,
+                c5: row.querySelector('.c5').value,
+                c6: row.querySelector('.c6').value,
+                pMasseur: row.querySelector('.p-masseur').value,
+                pSalon: row.querySelector('.p-salon').value,
+                advance: row.querySelector('.advance').value,
+                debt: row.querySelector('.debt').value,
+                warning: row.querySelector('.warning').value,
+                score: row.querySelector('.score').value
+            });
+        });
+        
+        localStorage.setItem('daily_workspace_draft', JSON.stringify(draftData));
     }
 
-    function addNewRow() {
+    // بازگردانی اطلاعات پیش‌نویس جدول بعد از رفرش یا ورود مجدد
+    function restoreWorkspaceDraft(draftData) {
+        draftData.forEach(data => {
+            addNewRow(data.rowId);
+            const row = document.getElementById(`row-${data.rowId}`);
+            if (row) {
+                row.querySelector('.masseur-name-input').value = data.name;
+                row.querySelector('.c1').value = data.c1;
+                row.querySelector('.c2').value = data.c2;
+                row.querySelector('.c3').value = data.c3;
+                row.querySelector('.c4').value = data.c4;
+                row.querySelector('.c5').value = data.c5;
+                row.querySelector('.c6').value = data.c6;
+                row.querySelector('.p-masseur').value = data.pMasseur;
+                row.querySelector('.p-salon').value = data.pSalon;
+                row.querySelector('.advance').value = data.advance;
+                row.querySelector('.debt').value = data.debt;
+                row.querySelector('.warning').value = data.warning;
+                row.querySelector('.score').value = data.score;
+                
+                calculateRow(data.rowId);
+            }
+        });
+    }
+
+    // افزودن سطر جدید به جدول اکسلی
+    function addNewRow(customId = null) {
         const tbody = document.getElementById('excel-body');
-        const rowId = Date.now();
+        const rowId = customId || Date.now();
         const tr = document.createElement('tr');
         tr.id = `row-${rowId}`;
         tr.innerHTML = `
-            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور" oninput="autoSaveWorkspace()"></td>
-            <td><input type="number" class="table-input total-amount" value="0" oninput="calculateRow('${rowId}')"></td>
-            <td><input type="number" class="table-input total-count" value="0" oninput="autoSaveWorkspace()"></td>
+            <td><input type="text" class="table-input masseur-name-input" placeholder="نام ماسور" oninput="saveWorkspaceDraft()"></td>
+            <td><input type="number" class="table-input c1" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c2" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c3" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c4" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c5" value="0" oninput="calculateRow('${rowId}')"></td>
+            <td><input type="number" class="table-input c6" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input p-masseur" value="60" oninput="calculateRow('${rowId}')">%</td>
             <td><input type="number" class="table-input p-salon" value="40" oninput="calculateRow('${rowId}')">%</td>
             <td><input type="number" class="table-input advance" value="0" oninput="calculateRow('${rowId}')"></td>
             <td><input type="number" class="table-input debt" value="0" oninput="calculateRow('${rowId}')"></td>
-            <td><input type="number" class="table-input warning" value="0" oninput="autoSaveWorkspace()"></td>
-            <td><input type="number" class="table-input score" value="0" oninput="autoSaveWorkspace()"></td>
+            <td><input type="number" class="table-input warning" value="0" oninput="saveWorkspaceDraft()"></td>
+            <td><input type="number" class="table-input score" value="0" oninput="saveWorkspaceDraft()"></td>
             <td id="res-masseur-${rowId}" class="result-cell">0</td>
             <td id="res-salon-${rowId}" class="salon-cell">0</td>
-            <td><button class="btn-danger" style="padding: 6px 10px; background-color: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer;" onclick="document.getElementById('row-${rowId}').remove(); autoSaveWorkspace();">❌</button></td>
+            <td><button class="btn-danger" style="padding:4px 8px; background-color: var(--danger); color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="document.getElementById('row-${rowId}').remove(); saveWorkspaceDraft();">❌</button></td>
         `;
         tbody.appendChild(tr);
+        saveWorkspaceDraft();
     }
 
+    // محاسبه در لحظه ردیف
     function calculateRow(rowId) {
         const row = document.getElementById(`row-${rowId}`);
-        if (!row) return;
-        const totalAmount = +row.querySelector('.total-amount').value;
+        const c1 = +row.querySelector('.c1').value;
+        const c2 = +row.querySelector('.c2').value;
+        const c3 = +row.querySelector('.c3').value;
+        const c4 = +row.querySelector('.c4').value;
+        const c5 = +row.querySelector('.c5').value;
+        const c6 = +row.querySelector('.c6').value;
         const pMasseur = +row.querySelector('.p-masseur').value;
         const pSalon = +row.querySelector('.p-salon').value;
         const advance = +row.querySelector('.advance').value;
         const debt = +row.querySelector('.debt').value;
 
-        const baseMasseurShare = (totalAmount * pMasseur) / 100;
+        const totalClients = c1 + c2 + c3 + c4 + c5 + c6;
+        
+        const baseMasseurShare = (totalClients * pMasseur) / 100;
         const masseurShare = baseMasseurShare - advance + debt;
-        const salonShare = (totalAmount * pSalon) / 100;
+        const salonShare = (totalClients * pSalon) / 100;
 
         document.getElementById(`res-masseur-${rowId}`).innerText = Math.round(masseurShare).toLocaleString();
         document.getElementById(`res-salon-${rowId}`).innerText = Math.round(salonShare).toLocaleString();
         
-        autoSaveWorkspace(); 
+        // ذخیره تغییرات فیلدهای عددی پس از هر بار محاسبه
+        saveWorkspaceDraft();
     }
 
+    // ذخیره پایان روز در آرشیو اختصاصی پرسنل
     function saveAndCloseDay() {
         const rows = document.querySelectorAll('#excel-body tr');
         if(rows.length === 0) { alert("ردیفی برای ذخیره وجود ندارد!"); return; }
@@ -341,10 +339,14 @@
 
         rows.forEach(row => {
             const name = row.querySelector('.masseur-name-input').value.trim();
-            if(!name) return; 
+            if(!name) return; // اگر نام وارد نشده بود رد شو
 
-            const totalAmount = +row.querySelector('.total-amount').value;
-            const totalCount = +row.querySelector('.total-count').value;
+            const c1 = +row.querySelector('.c1').value;
+            const c2 = +row.querySelector('.c2').value;
+            const c3 = +row.querySelector('.c3').value;
+            const c4 = +row.querySelector('.c4').value;
+            const c5 = +row.querySelector('.c5').value;
+            const c6 = +row.querySelector('.c6').value;
             const pMasseur = +row.querySelector('.p-masseur').value;
             const pSalon = +row.querySelector('.p-salon').value;
             const advance = +row.querySelector('.advance').value;
@@ -352,9 +354,10 @@
             const warning = +row.querySelector('.warning').value;
             const score = +row.querySelector('.score').value;
 
-            const baseMasseurShare = (totalAmount * pMasseur) / 100;
+            const totalClients = c1 + c2 + c3 + c4 + c5 + c6;
+            const baseMasseurShare = (totalClients * pMasseur) / 100;
             const masseurShare = baseMasseurShare - advance + debt;
-            const salonShare = (totalAmount * pSalon) / 100;
+            const salonShare = (totalClients * pSalon) / 100;
 
             if(!archive[name]) {
                 archive[name] = [];
@@ -362,8 +365,7 @@
 
             archive[name].push({
                 date: activeDate,
-                totalAmount: totalAmount,
-                totalCount: totalCount,
+                clients: [c1, c2, c3, c4, c5, c6],
                 perM: pMasseur,
                 perS: pSalon,
                 advance: advance,
@@ -377,26 +379,31 @@
         });
 
         if(savedCount > 0) {
-            try {
-                localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
-            } catch(e) {}
-            alert(`اطلاعات روز ${activeDate} با موفقیت در آرشیو پرسنل ذخیره شد! 🔒✨`);
-            clearDraft(); 
+            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
             
+            // پاک کردن پیش‌نویس موقت روز جاری چون با موفقیت آرشیو نهایی شد
+            localStorage.removeItem('daily_workspace_draft');
+            
+            alert(`اطلاعات روز ${activeDate} با موفقیت در صفحه اختصاصی پرسنل ذخیره شد! 🔒✨`);
+            
+            // بازنشانی صفحه به حالت اولیه
             document.getElementById('workspace').classList.add('hidden');
             document.getElementById('current-date-display').classList.add('hidden');
             document.getElementById('start-day-btn').classList.remove('hidden');
         } else {
-            alert("لطفاً نام ماسورها را وارد کنید! ✏️");
+            alert("لطفاً نام ماسورها رو وارد کن ارشام جان! ✏️");
         }
     }
 
     function updateMasseurDropdown() {
         const select = document.getElementById('report-masseur-select');
-        select.innerHTML = '<option value="">-- انتخاب ماسور مورد نظر --</option>';
+        select.innerHTML = '<option value="">-- انتخاب ماسور --</option>';
         Object.keys(archive).forEach(name => {
             select.innerHTML += `<option value="${name}">${name}</option>`;
         });
     }
 
-    function loadMasseurRep
+    // لود گزارش اختصاصی ماسور از روی آرشیو کامل دفتری
+    function loadMasseurReport() {
+        const name = document.getElementById('report-masseur-select').value;
+        const detailDiv = document.getElemen
