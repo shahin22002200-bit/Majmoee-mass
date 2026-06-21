@@ -50,7 +50,7 @@
         .hidden { display: none !important; }
 
         /* ورود */
-        .login-screen { max-width: 360px; margin: 80px auto 0 auto; background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+        .login-screen { max-width: 360px; margin: 50px auto 0 auto; background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
         .login-screen h2 { color: var(--primary); margin-bottom: 20px; }
         .login-screen input { width: 100%; margin-bottom: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
         .login-screen button { width: 100%; padding: 12px; border-radius: 8px; }
@@ -70,12 +70,16 @@
 </head>
 <body>
 
+<div style="text-align: center; margin-top: 20px;">
+    <button type="button" onclick="resetSystemCache()" style="background-color: var(--danger); font-size: 11px; padding: 5px 10px; border-radius: 20px;">🧼 اگر صفحه قفل شده، اینجا کلیک کن تا ریست بشه</button>
+</div>
+
 <div id="login-container" class="login-screen">
     <h2>ورود به حساب مدیریت 🔐</h2>
     <div id="login-fields">
         <input type="text" id="username" placeholder="نام کاربری" autocomplete="off">
         <input type="password" id="password" placeholder="رمز عبور">
-        <button type="button" onclick="checkLogin()">ورود ✨</button>
+        <button type="button" id="submit-login-btn">ورود ✨</button>
     </div>
 </div>
 
@@ -85,21 +89,21 @@
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
-        <button class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
-        <button class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج 🚪</button>
+        <button type="button" class="tab-btn active" onclick="switchTab('daily')">📥 میز کار روزانه</button>
+        <button type="button" class="tab-btn" onclick="switchTab('reports')">📜 آرشیو و صفحات اختصاصی</button>
+        <button type="button" class="tab-btn" onclick="logout()" style="background-color: var(--danger); color: white; margin-right: auto;">خروج 🚪</button>
     </div>
 
     <div id="daily-tab">
         <div class="card" style="text-align: center;">
-            <button id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); font-size: 16px; padding: 12px 25px;">📅 شروع روز کاری جدید</button>
+            <button type="button" id="start-day-btn" onclick="startNewDay()" style="background-color: var(--secondary); font-size: 16px; padding: 12px 25px;">📅 شروع روز کاری جدید</button>
             <h3 id="current-date-display" class="hidden" style="margin-top: 10px; color: var(--primary);"></h3>
         </div>
 
         <div id="workspace" class="card hidden">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h3>جدول حساب‌کتاب امروز ✏️</h3>
-                <button onclick="addNewRow()" style="background-color: #1e90ff; padding: 6px 12px;">➕ افزودن ردیف ماسور جدید</button>
+                <button type="button" onclick="addNewRow()" style="background-color: #1e90ff; padding: 6px 12px;">➕ افزودن ردیف ماسور جدید</button>
             </div>
             
             <div class="table-wrapper">
@@ -129,7 +133,7 @@
                 </table>
             </div>
 
-            <button onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border-radius: 8px;">🔒 پایان، ذخیره و آرشیو روز کاری</button>
+            <button type="button" onclick="saveAndCloseDay()" style="background-color: var(--success); width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border-radius: 8px;">🔒 پایان، ذخیره و آرشیو روز کاری</button>
         </div>
     </div>
 
@@ -143,7 +147,7 @@
             <div id="report-detail" class="hidden" style="margin-top: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;" class="action-buttons">
                     <h3>زونکن پرسنلی: <span id="rep-name" style="color:var(--primary)"></span></h3>
-                    <button onclick="printReportToPDF()" style="background-color: #2ed573; padding: 8px 15px;">📄 خروجی PDF / پرینت فاکتور</button>
+                    <button type="button" onclick="printReportToPDF()" style="background-color: #2ed573; padding: 8px 15px;">📄 خروجی PDF / پرینت فاکتور</button>
                 </div>
                 
                 <div class="summary-box">
@@ -174,7 +178,7 @@
                 </div>
 
                 <div class="action-buttons" style="margin-top: 15px; display: flex; gap: 10px;">
-                    <button style="background-color: var(--danger); flex: 1; padding: 12px; font-weight: bold; border-radius: 6px;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و صفر کردن آرشیو این شخص</button>
+                    <button type="button" style="background-color: var(--danger); flex: 1; padding: 12px; font-weight: bold; border-radius: 6px;" onclick="clearMasseurData()">🗑️ تسویه حساب ماهانه و صفر کردن آرشیو این شخص</button>
                 </div>
             </div>
         </div>
@@ -186,30 +190,53 @@
     const VALID_PASS = "488928";
     let activeDate = "";
 
-    if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
+    // تابع برای پاک کردن کش مرورگر اگر قبلا قفل کرده بود
+    function resetSystemCache() {
+        sessionStorage.clear();
+        alert("حافظه موقت پاک شد! حالا دوباره نام کاربری و رمز عبور رو تست کن ارشام جان 🧼");
+        window.location.reload();
+    }
+
+    // بررسی وضعیت لاگین از قبل
+    if(sessionStorage.getItem('isLoggedIn') === 'true') { 
+        showMainContent(); 
+    }
 
     function checkLogin() {
         const u = document.getElementById('username').value.trim();
         const p = document.getElementById('password').value;
+        
         if(u === VALID_USER && p === VALID_PASS) {
             sessionStorage.setItem('isLoggedIn', 'true');
             alert('خوش آمدید ارشام جان! 👑💆‍♂️');
             showMainContent();
-        } else { alert('خطا در ورود! ❌'); }
+        } else { 
+            alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); 
+        }
     }
 
+    // اتصال دقیق کلیک دکمه به تابع جاوااسکریپت بدون تداخل فرم
+    document.getElementById('submit-login-btn').onclick = function(e) {
+        e.preventDefault();
+        checkLogin();
+    };
+
     document.getElementById('password').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') { checkLogin(); }
+        if (e.key === 'Enter') { e.preventDefault(); checkLogin(); }
     });
     document.getElementById('username').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') { checkLogin(); }
+        if (e.key === 'Enter') { e.preventDefault(); checkLogin(); }
     });
 
     function showMainContent() {
         document.getElementById('login-container').classList.add('hidden');
         document.getElementById('main-content').classList.remove('hidden');
     }
-    function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.reload(); }
+    
+    function logout() { 
+        sessionStorage.removeItem('isLoggedIn'); 
+        window.location.reload(); 
+    }
 
     let archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
 
@@ -261,7 +288,7 @@
             <td><input type="number" class="table-input score" value="0" oninput="calculateRow('${rowId}')"></td>
             <td id="res-masseur-${rowId}" class="result-cell">0</td>
             <td id="res-salon-${rowId}" class="salon-cell">0</td>
-            <td><button style="background-color:var(--danger); padding:4px 8px;" onclick="document.getElementById('row-${rowId}').remove()">❌</button></td>
+            <td><button type="button" style="background-color:var(--danger); padding:4px 8px;" onclick="document.getElementById('row-${rowId}').remove()">❌</button></td>
         `;
         tbody.appendChild(tr);
     }
@@ -382,26 +409,4 @@
                     <td>${clientList}</td>
                     <td>${day.perM}% / ${day.perS}%</td>
                     <td style="color:#ff4757;">${(day.advance || 0).toLocaleString()}</td>
-                    <td style="color:#1e90ff;">${(day.debt || 0).toLocaleString()}</td>
-                    <td style="color:red; font-weight:bold;">${day.warning}</td>
-                    <td style="color:green; font-weight:bold;">${day.score}</td>
-                    <td>${Math.round(day.mShare).toLocaleString()}</td>
-                    <td>${Math.round(day.sShare).toLocaleString()}</td>
-                </tr>
-            `;
-        });
-
-        document.getElementById('total-masseur-money').innerText = Math.round(tM).toLocaleString();
-        document.getElementById('total-salon-money').innerText = Math.round(tS).toLocaleString();
-        document.getElementById('total-warnings').innerText = tW;
-        document.getElementById('total-stars').innerText = tSt;
-    }
-
-    function printReportToPDF() {
-        window.print();
-    }
-
-    function clearMasseurData() {
-        const name = document.getElementById('report-masseur-select').value;
-        if(confirm(`آیا مطمئنی می‌خوای آرشیو و حساب‌های ${name} رو کاملاً پاک و تسویه کنی؟`)) {
-            delete
+                    <td style="color:#1e90ff
