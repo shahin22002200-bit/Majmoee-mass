@@ -187,14 +187,12 @@
     const VALID_PASS = "6660488928";
     let activeDate = "";
 
-    if(sessionStorage.getItem('isLoggedIn') === 'true') { showMainContent(); }
-
+    // تابع اصلی بررسی ورود که بدون وابستگی به امنیت تب مرورگر مستقیماً صفحه رو باز میکنه
     function checkLogin() {
         const userInp = document.getElementById('username').value.trim();
         const passInp = document.getElementById('password').value;
 
         if(userInp === VALID_USER && passInp === VALID_PASS) {
-            sessionStorage.setItem('isLoggedIn', 'true');
             showMainContent();
         } else { 
             alert('خطا در ورود! نام کاربری یا رمز عبور اشتباه است ❌'); 
@@ -202,13 +200,21 @@
     }
 
     function showMainContent() {
-        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('login-container').style.display = 'none';
         document.getElementById('main-content').classList.remove('hidden');
         checkDraft(); 
     }
-    function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.reload(); }
+    
+    function logout() { 
+        window.location.reload(); 
+    }
 
-    let archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
+    let archive = {};
+    try {
+        archive = JSON.parse(localStorage.getItem('massage_excel_archive')) || {};
+    } catch(e) {
+        archive = {};
+    }
 
     function switchTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -225,25 +231,27 @@
     }
 
     function checkDraft() {
-        const savedDate = localStorage.getItem('massage_draft_date');
-        const savedRows = localStorage.getItem('massage_draft_rows');
-        
-        if (savedDate && savedRows) {
-            activeDate = savedDate;
-            document.getElementById('current-date-display').innerText = `📅 روز کاری: ${activeDate}`;
-            document.getElementById('current-date-display').classList.remove('hidden');
-            document.getElementById('workspace').classList.remove('hidden');
-            document.getElementById('start-day-btn').classList.add('hidden');
+        try {
+            const savedDate = localStorage.getItem('massage_draft_date');
+            const savedRows = localStorage.getItem('massage_draft_rows');
             
-            const tbody = document.getElementById('excel-body');
-            tbody.innerHTML = savedRows;
-            
-            const rows = tbody.querySelectorAll('tr');
-            rows.forEach(row => {
-                const rowId = row.id.replace('row-', '');
-                calculateRow(rowId);
-            });
-        }
+            if (savedDate && savedRows) {
+                activeDate = savedDate;
+                document.getElementById('current-date-display').innerText = `📅 روز کاری: ${activeDate}`;
+                document.getElementById('current-date-display').classList.remove('hidden');
+                document.getElementById('workspace').classList.remove('hidden');
+                document.getElementById('start-day-btn').classList.add('hidden');
+                
+                const tbody = document.getElementById('excel-body');
+                tbody.innerHTML = savedRows;
+                
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const rowId = row.id.replace('row-', '');
+                    calculateRow(rowId);
+                });
+            }
+        } catch(e) {}
     }
 
     function autoSaveWorkspace() {
@@ -255,16 +263,20 @@
                     input.setAttribute('value', input.value);
                 });
             });
-            localStorage.setItem('massage_draft_date', activeDate);
-            localStorage.setItem('massage_draft_rows', tbody.innerHTML);
+            try {
+                localStorage.setItem('massage_draft_date', activeDate);
+                localStorage.setItem('massage_draft_rows', tbody.innerHTML);
+            } catch(e) {}
         } else {
             clearDraft();
         }
     }
 
     function clearDraft() {
-        localStorage.removeItem('massage_draft_date');
-        localStorage.removeItem('massage_draft_rows');
+        try {
+            localStorage.removeItem('massage_draft_date');
+            localStorage.removeItem('massage_draft_rows');
+        } catch(e) {}
     }
 
     function startNewDay() {
@@ -380,10 +392,4 @@
                 score: score,
                 mShare: masseurShare,
                 sShare: salonShare
-            });
-            savedCount++;
-        });
-
-        if(savedCount > 0) {
-            localStorage.setItem('massage_excel_archive', JSON.stringify(archive));
-            alert(`اطلاعات روز ${activeDate} با موفق
+      
